@@ -1,0 +1,27 @@
+{% load crispy_forms_tags %}
+<div class="row">
+	<div class="col-md">
+		<div class="row">
+            <div class="col-xl">
+	    	   {{form.direccion|as_crispy_field}}
+		    </div>
+        </div>
+	</div>
+	<div class="col-md">
+		<div class="row">
+	  		<div class="col-xl">
+	       		{{form.tipo_via|as_crispy_field}}
+	  		</div>
+	  		<div class="col-xl">
+	       		{{form.numero|as_crispy_field}}
+	  		</div>
+		</div>
+	</div>
+</div>
+{% with form.CP|as_crispy_field as a %}
+{% with form.localidad|as_crispy_field as b %}
+{% with form.provincia|as_crispy_field as c %}
+{% with form.pais|as_crispy_field as d %}
+    {% include 'gentemp/4_cols_resp.html' with a=a b=b c=c d=d %}
+{% endwith %}{% endwith %}{% endwith %}{% endwith %}
+

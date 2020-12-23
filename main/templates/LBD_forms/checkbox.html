@@ -1,0 +1,16 @@
+<div class="form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" type="checkbox"
+        name="{{ elem.name }}"
+        {% if widget.value != None %}  
+            value="{{ elem.value|stringformat:'s' }}"
+        {% endif %}
+        {% if elem.value == True %}  
+            checked
+        {% endif %}
+        {% include "django/forms/widgets/attrs.html" %}
+        >
+        <span class="form-check-sign"></span>
+        {{elem.label}}
+    </label>
+</div>

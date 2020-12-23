@@ -1,0 +1,101 @@
+{% load static %}
+
+{% load customtags %}
+<script>
+{% if link_list %}
+		        	
+	var AccFormatter=function operateAccFormatter(value, row, index) {
+		
+			return [
+			{% for i in link_list %}
+			{% if i.0 == 'Editar'%}
+    		    "<a  href='{{i.1}}"+row.id+"' style='color:orange;' class='btn btn-link btn-info table-action view' title='Editar'>",
+                "<i class='fa fa-edit'></i>",
+                "</a>&nbsp;&nbsp;&nbsp;",
+		    {% else %}
+    		    "<a  href='{{i.1}}"+row.id+"' title='{{i.0}}' >",
+    		    "{{i.0}}",
+    		    "</a>&nbsp;&nbsp;&nbsp;",
+		    {% endif %}
+			{% endfor %}
+	  ].join('');
+	};
+	
+{% endif %}
+function ActioncellStyle(value, row, index){
+
+    return {
+        classes: 'td-actions'
+        
+    }
+}
+function rowStyle(row, index) {
+    
+    return {
+      css: {
+        cursor: 'pointer'
+      }
+    }
+  }
+function estilo_celda(value, row, index, field){
+    res= Object.keys(row).find(key => row[key] == value)
+    return {
+        classes: res+"_css"
+        
+    }
+}
+</script>
+
+<table id="bttable" style="background-color: white;"
+		
+		data-classes='table table-sm table-striped  table-hover table-borderless'
+		data-toggle="table" 
+		data-show-columns="True" 
+		data-pagination="True"
+		data-side-pagination="server"
+		data-url="{% url url_json 'Json' %}"
+		data-mobile-responsive="true"
+		data-search="true" 
+		data-checkbox-header="false" 
+		data-id-field="id"
+		data-show-toggle="true" 
+		data-toolbar="#toolbar" 
+		data-show-export="true"
+		data-export-types="['csv', 'txt',  'excel']"
+	 	data-locale="es-ES"
+		data-sort-name={{data_sort_name}}
+    	data-sort-order={{data_sort_order}}
+    	data-show-refresh="true"
+    	{% if cursor_row %}
+    	   data-row-style="rowStyle"
+		{% endif %}
+		>
+		
+	    <thead>
+	        <tr>
+		        {% for i in field_list %}
+    	        	<th class="{{i.0}}_css" data-field="{{i.0}}" {% data_sortable i.2 %} >
+    	        		{{ i.1 }}
+    	        	</th>
+		        {% endfor %}
+		        {% if link_list %}
+		        	<th data-sortable="false" data-formatter="AccFormatter"
+		        	 data-cell-style="ActioncellStyle"></th>
+		        {% endif %}
+	        </tr>
+	    </thead>
+	
+	</table>
+<script>
+  var $table = $('#bttable')
+
+
+    
+      $table.bootstrapTable('destroy').bootstrapTable({
+        icons: {refresh:'fa fa-refresh',
+                toggle: 'fa fa-mobile',
+                columns: 'fa fa-columns',}
+      })
+
+
+</script>

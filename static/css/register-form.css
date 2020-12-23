@@ -1,0 +1,18 @@
+
+.register-form label{
+    color:white;
+}
+
+.left-title{
+    color:white;
+    text-align: left;
+    font-weight: bold;
+}
+
+#id_observaciones{
+    
+    height: unset;
+}
+#id_otros_servicios{
+    height: unset;
+}

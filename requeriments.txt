@@ -1,0 +1,8 @@
+Django==3.0.8
+django-crispy-forms==1.9.2
+djangorestframework==3.11.0
+mysqlclient==2.0.1
+reportlab==3.5.45
+python-docx==0.8.10
+python-pptx==0.6.18
+openpyxl==3.0.5

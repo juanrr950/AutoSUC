@@ -1,0 +1,38 @@
+{% extends 'main/master.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load LBD_filter_form %}
+<meta charset="utf-8">
+{% block title %}
+Listado de SU
+{% endblock %}
+{% block content %}
+<style>
+.[FIELD_NAME]_css{
+    white-space:nowrap;
+}
+
+
+.[FIELD_NAME]_css{
+    text-align: end;    
+}
+
+</style>
+<div class="card">
+    <div class="card-body">
+        <div class="container-fluid">
+            <div id="toolbar">
+                <a role="button"  id="btNuevo" 
+                href="/suc/new_suc" 
+                class="btn btn-info btn-wd" >
+                    <i class="fa fa-plus"></i> Nuevo SUC
+                </a>
+            
+            </div>
+            {{table}}
+            
+            
+        </div>
+    </div>
+</div>
+{% endblock %}
