@@ -97,14 +97,14 @@ def edit_suc(request,pk):
         form=Suc_form(request.POST,request.FILES,instance=suc)
         
         if form.is_valid():
-            '''
+            
             suc=form.save(commit=False)
             #ASIGNAR AQUI CLASE RELACIONADA SI ES NECESARIO
             suc.save()
             messages.success(request, "Suc modificado con éxito. ")
             generar_suc(suc)
-            '''
-            cargar_registros_txt()
+            
+            
             return redirect('list_suc',view="list") 
         
         else:
