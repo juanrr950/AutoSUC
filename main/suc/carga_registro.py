@@ -3,6 +3,7 @@ import os
 from AutoSUC.settings import BASE_DIR
 from main.models import Registro
 import time
+import re
 
 
 
@@ -47,21 +48,26 @@ def cargar_registros_txt():
     inicio=time.time()
     
     f = open(os.path.join(BASE_DIR,
-                            'media/registros/postes.txt'), "r")
+                            'media/registros/postes2.csv'), "r")
     print("Archivo abierto en "+str((time.time()-inicio)/60)+" min")    
     
     registros=[]
     i=0
+    
     for x in f:
+
         i=i+1
-        poste_ori=x
+        linea=x.split(";")
+        poste_ori=linea[2]
         poste=''.join(i for i in poste_ori if i.isdigit())
         
         if poste.isdigit():
             poste=int(poste)
             if poste>0 and poste< 4294967295 :
                 
-                registros.append(Registro(id_poste=poste))
+                registros.append(Registro(id_poste=poste,
+                                          codigo_miga=linea[1],
+                                          codigo_suc=linea[0]))
                 if i%2000==0:
                     Registro.objects.bulk_create(registros,
                                                   ignore_conflicts=True)
@@ -74,4 +80,8 @@ def cargar_registros_txt():
         if i%2000==0:
             print("LLevamos "+str(i)+"  lineas, en "+
                   str((time.time()-inicio)/60)+" min")
-            
+           
+    print("LLevamos "+str(i)+"  lineas, en "+
+                  str((time.time()-inicio)/60)+" min") 
+    Registro.objects.bulk_create(registros,
+                            ignore_conflicts=True)

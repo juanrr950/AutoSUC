@@ -148,14 +148,26 @@
                             <p>REALIZADOS</p>
                         </a>
                     </li>
-                    <li class="nav-item {% if request|path:1 == 'configuracion'%}active{% endif %}">
-                        <a class="nav-link" data-toggle="collapse" href="/configuracion">
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#Configuracion">
                             <i class="nc-icon nc-settings-gear-64"></i>
                             <p>
                                 Configuración
                                 <b class="caret"></b>
                             </p>
                         </a>
+                        <div class="collapse {% if request|path:1 == 'configuracion'%}show{% endif %}" id="Configuracion">
+                            <ul class="nav">
+                                <li class="nav-item {% if request|path:2 == 'cargar_postes'%}active{% endif %}">
+                                    <a class="nav-link" href="/configuracion/cargar_postes">
+                                        <span class="sidebar-mini">CP</span>
+                                        <span class="sidebar-normal">Cargar Postes</span>
+                                    </a>
+                                </li>
+                                
+                                
+                            </ul>
+                        </div>
                     </li>
                     
                 </ul>

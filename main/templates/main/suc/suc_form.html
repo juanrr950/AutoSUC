@@ -130,13 +130,13 @@
                       Archivos      
                     </div>
                     <div class="col-sm-10">
-                        
-                        {% with form.imagen|as_crispy_field as a %}
-                        {% with form.word|as_crispy_field as b %}
-                        {% with form.excel|as_crispy_field as c %}
-                        {% with form.powerpoint|as_crispy_field as d %}
-                            {% include 'gentemp/4_cols_resp.html' with a=a b=b c=c d=d %}
-                        {% endwith %}{% endwith %}{% endwith %}{% endwith %}
+                        {{form.imagen|as_crispy_field}}
+                        {% if pk %}
+                            <a href="/media/{{form.instance.excel}}" >Excel</a>
+                            <a href="/media/{{form.instance.word}}" >Word</a>
+                            <a href="/media/{{form.instance.powerpoint}}" >PowerPoint</a>
+                        {% endif  %}
+
                         
                         
                     </div>  

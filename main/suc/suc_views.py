@@ -8,8 +8,11 @@ from django.shortcuts import redirect, render, get_object_or_404
 from main.suc.suc_form import Suc_form
 from main.suc.generar_suc import generar_suc
 from main.suc.carga_registro import cargar_registros_txt
-
-
+import os, io
+from django.http import HttpResponse
+from AutoSUC.settings import BASE_DIR
+from _io import StringIO
+from zipfile import ZipFile
 class Suc_BT(BTView):
     def get(self, request, *args, **kwargs):
         #Sobreescribo el get para poner algunos campos solo
@@ -127,3 +130,40 @@ def delete_suc(request,pk):
         
     messages.success(request, "suc eliminado con éxito. " )
     return redirect('list_suc',view="list") 
+
+def donwload_zip_suc(request,pk):
+    
+    
+    suc=Suc.objects.get(pk=pk)
+    # Get file
+    '''
+    file=open(os.path.join(BASE_DIR,
+              suc.excel.path), 'rb')
+    '''
+    in_memory = io.BytesIO()
+    zip = ZipFile(in_memory, "a")
+        
+    zip.write(os.path.join(BASE_DIR,
+              suc.excel.path), suc.nombre+"/"+os.path.basename(suc.excel.name))
+    zip.write(os.path.join(BASE_DIR,
+              suc.word.path), suc.nombre+"/"+os.path.basename(suc.word.name))
+    zip.write(os.path.join(BASE_DIR,
+              suc.powerpoint.path), suc.nombre+"/"+os.path.basename(suc.powerpoint.name))
+    zip.write(os.path.join(BASE_DIR,
+              suc.imagen.path), suc.nombre+"/"+os.path.basename(suc.imagen.name))
+    #zip.writestr("file2.csv", "csv,data,here")
+    
+    # fix for Linux zip files read in Windows
+    '''
+    for file in zip.filelist:
+        file.create_system = 0    
+    '''
+    zip.close()
+
+    response = HttpResponse()
+    response["Content-Disposition"] = "attachment; filename="+suc.nombre+".zip"
+    
+    in_memory.seek(0)    
+    response.write(in_memory.read())
+    
+    return response

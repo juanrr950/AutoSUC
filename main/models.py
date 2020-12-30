@@ -102,5 +102,5 @@ class Suc(tModel):
 class Registro(models.Model):
     codigo_suc=models.CharField(max_length=40,null=True,blank=True)
     codigo_miga=models.IntegerField(null=True,blank=True)
-    id_poste=models.IntegerField()
+    id_poste=models.IntegerField(unique=True)
     
