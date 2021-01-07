@@ -31,3 +31,45 @@ function rellenarCampos(){
    $("#id_dni_tecnico").val(campos[17]);
     
 }
+
+function comprobarPoste(event){
+    var poste=event.target.value;
+    $.ajax({
+        url: "/registro/comprobar_poste/"+event.target.value, 
+        success: function(result){
+            if(result.poste_registrado){
+                error_campo(event.target.id,"Poste ya registrado "+ result.codigo_suc);
+                
+            }else{
+                //Ponemos el borde del poste en verde
+                mensaje_campo(event.target.id,"Ok")
+            }
+            
+        }
+    
+    });
+    
+}
+
+function obtenerCentral(){
+    var codigo=event.target.value;
+    $.ajax({
+        url: "/central/obtener_central/"+event.target.value, 
+        success: function(result){
+            if(result.encontrada){
+                modificar_campo("#id_nombre_central",result.nombre_central,
+                 false, "green")
+                
+                mensaje_campo("id_codigo_miga","Ok",
+                 color="green")
+            }else{
+                //Ponemos el borde del poste en verde
+                 mensaje_campo("id_codigo_miga","Codigo MIGA no encontrado",
+                 color="orange")
+            }
+            
+        }
+    
+    });
+    
+}

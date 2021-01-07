@@ -32,7 +32,11 @@ urlpatterns = [
     path('',login_required(views.example,'next','/accounts/login'), name='example'),
     path('accounts/login/',views.login.as_view(),name='login'),
     path('logout/',auth_views.LogoutView.as_view(),name='logout'),
-
+    
+    path('central/obtener_central/<codigo_miga>',
+           login_required(views.obtener_central,
+                           'next','/accounts/login'),name='obtener_central'),
+    
     #SUCs
     path('suc/list/<view>',  login_required(suc_views.Suc_BT.as_view(),'next','/accounts/login'),name='list_suc'),
     path('suc/new_suc',  login_required(suc_views.new_suc,'next','/accounts/login'),name='new_suc'),

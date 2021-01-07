@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django.forms',
     'rest_framework',
+    #'fontawesome-free',
     #'audit'
 ]
 

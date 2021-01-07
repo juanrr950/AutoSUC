@@ -65,24 +65,33 @@ function confirmDialog(titulo,mensaje,enlace,fun=false){
     $("#id_modal_confirm").modal("show")
         
 }
-function modificar_campo(selector,valor,fecha=false){
+function modificar_campo(selector,valor,fecha=false, color_borde="orange"){
     if(valor!="" && valor!=null) {
         if (fecha){
             f=(valor).split('/')
             valor=f[2]+"-"+f[1]+"-"+f[0]
         }
         $(selector).val(valor)
-        $(selector).css("border-color","orange")
+        $(selector).css("border-color",color_borde)
         $(selector).parents(".collapse").collapse('show')
     }   
 }
 function error_campo(id_campo,mensaje){
+    $("#div_"+id_campo+" > div > p").remove()
     
     $("#div_"+id_campo+" div").append("<p class='invalid-feedback'><strong>"+mensaje+"</strong></p>")
     $("#"+id_campo).addClass("is-invalid")
     $("#"+id_campo).parents(".collapse").collapse('show')
 
 }
+function mensaje_campo(id_campo,mensaje,color="green"){
+    $("#div_"+id_campo+" > div > p").remove()
+    
+    $("#div_"+id_campo+" div").append("<p style='color:"+color+"'><strong>"+mensaje+"</strong></p>")
+    $("#"+id_campo).css("border-color",color)
+
+}
+
 function msg_info(msg,tag){
 //Mensaje de información
     $("#id_container").prepend(`

@@ -104,3 +104,6 @@ class Registro(models.Model):
     codigo_miga=models.IntegerField(null=True,blank=True)
     id_poste=models.IntegerField(unique=True)
     
+class Central(models.Model):
+    codigo_miga = models.CharField(max_length=50,unique=True)
+    nombre_central = models.CharField(max_length=150)

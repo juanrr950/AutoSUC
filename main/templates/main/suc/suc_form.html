@@ -2,6 +2,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% load LBD_filter_form %}
+{% load customtags %}
 <meta charset="utf-8">
 {% block title %}
     {% if pk %}
@@ -132,9 +133,29 @@
                     <div class="col-sm-10">
                         {{form.imagen|as_crispy_field}}
                         {% if pk %}
-                            <a href="/media/{{form.instance.excel}}" >Excel</a>
-                            <a href="/media/{{form.instance.word}}" >Word</a>
-                            <a href="/media/{{form.instance.powerpoint}}" >PowerPoint</a>
+                            <a href="/media/{{form.instance.excel}}" >
+                                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                {{form.instance.excel|filename}}
+                            </a> <br/>
+                            <a href="/media/{{form.instance.word}}" >
+                                <i class="fa fa-file-word-o" aria-hidden="true"></i>
+                                {{form.instance.word|filename}}
+                                </a>
+                            <br/>
+                            <a href="/media/{{form.instance.powerpoint}}" >
+                            <i class="fa fa-file-powerpoint-o" aria-hidden="true"></i>
+                            {{form.instance.powerpoint|filename}}
+                            </a>
+                            <br/>
+                            <a href="/suc/donwload_zip_suc/{{pk}}" role="button" 
+                                class="btn btn-wd btn-info">
+                                <span class="btn-label">
+                                    <i class="nc-icon nc-cloud-download-93"></i>
+                                     Descargar SUC
+                                </span>
+                                
+                            </a>
+                            
                         {% endif  %}
 
                         

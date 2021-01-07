@@ -21,6 +21,14 @@ class Suc_form(ModelForm):
                 'excel','powerpoint','imagen']
         widgets={
                 'fecha_ar':DateInput(),
+                'poste_1':forms.TextInput(attrs={'onchange':'comprobarPoste(event)'}),
+                'poste_2':forms.TextInput(attrs={'onchange':'comprobarPoste(event)'}),
+                'poste_3':forms.TextInput(attrs={'onchange':'comprobarPoste(event)'}),
+                'poste_4':forms.TextInput(attrs={'onchange':'comprobarPoste(event)'}),
+                'poste_5':forms.TextInput(attrs={'onchange':'comprobarPoste(event)'}),
+                'codigo_miga':forms.TextInput(attrs={'onchange':'obtenerCentral()'})
+                
+                
                 #'[TIPO_DATETIME]':TimeInput(),
                 #'comentarios':forms.Textarea(attrs={'rows':8,'style':'height:unset !important;'}),
                 
