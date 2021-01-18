@@ -5,5 +5,6 @@ COPY . /AutoSUC
 WORKDIR /AutoSUC
 
 RUN pip install -r requeriments.txt
+RUN echo "mode='prod'" > mode.py
 
 CMD python3 manage.py runserver 0.0.0.0:80
