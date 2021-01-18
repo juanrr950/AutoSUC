@@ -105,6 +105,17 @@ elif MODE=="test":
             'PORT': '3306',
             }
         }
+elif MODE=="prod":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql', 
+            'NAME': 'autosuc',
+            'USER': 'autosuc_user',
+            'PASSWORD': '2346$5&$%)?sgfgc',
+            'HOST': 'juanas-as6404t.myasustor.com',   # Or an IP Address that your DB is hosted on
+            'PORT': '3306',
+            }
+        }
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 

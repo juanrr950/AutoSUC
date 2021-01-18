@@ -144,13 +144,13 @@ def donwload_zip_suc(request,pk):
     zip = ZipFile(in_memory, "a")
         
     zip.write(os.path.join(BASE_DIR,
-              suc.excel.path), suc.nombre+"/"+os.path.basename(suc.excel.name))
+              suc.excel.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.excel.name))
     zip.write(os.path.join(BASE_DIR,
-              suc.word.path), suc.nombre+"/"+os.path.basename(suc.word.name))
+              suc.word.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.word.name))
     zip.write(os.path.join(BASE_DIR,
-              suc.powerpoint.path), suc.nombre+"/"+os.path.basename(suc.powerpoint.name))
+              suc.powerpoint.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.powerpoint.name))
     zip.write(os.path.join(BASE_DIR,
-              suc.imagen.path), suc.nombre+"/"+os.path.basename(suc.imagen.name))
+              suc.imagen.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.imagen.name))
     #zip.writestr("file2.csv", "csv,data,here")
     
     # fix for Linux zip files read in Windows

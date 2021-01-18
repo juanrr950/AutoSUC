@@ -1,6 +1,4 @@
 from django.db import models
-from test.test_argparse import TestDisallowLongAbbreviationAllowsShortGrouping
-from ctypes.wintypes import WORD
 from django.db.models.fields.files import FileField
 from builtins import property
 from django.core.exceptions import ValidationError
