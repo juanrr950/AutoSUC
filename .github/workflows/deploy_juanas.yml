@@ -15,8 +15,14 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: Deploy Stage
+          id: getToken
           uses: fjogeleit/http-request-action@master
           with:
             url: 'http://78.30.50.161:19900/api/auth'
             method: 'POST'
             data: '{"username":"admin","password":"jarguezr1991"}'
+        - name: Update Container
+          run: echo  ${{steps.run_tests.outputs}}
+            
+            
+      
