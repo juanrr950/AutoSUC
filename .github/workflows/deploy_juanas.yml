@@ -19,4 +19,4 @@ jobs:
           with:
             url: 'http://juanas-as6404t.myasustor.com:19900/api/endpoints/1/docker/containers/autosuc_container/restart'
             method: 'POST'
-            bearerToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJyZWZyZXNjYWRvciIsInJvbGUiOjIsImV4cCI6MTYxMTE2ODgxN30.X2RdUbHq1AJBkPZNTxJKZRc-QcVwXxOEX5tmLWviRGg'
+            bearerToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOjEsImV4cCI6MTYxMTE3MTQzNn0.bVJ6lhDnte4B6bptR68I0zBU3JZXMLu5fel_l_btsYM'
