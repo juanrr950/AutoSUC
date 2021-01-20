@@ -58,7 +58,11 @@ class Suc(tModel):
     excel=FileField(upload_to=suc_directory_path, blank=True,null=True)
     powerpoint=FileField(upload_to=suc_directory_path, blank=True,null=True)
     imagen=FileField(upload_to=suc_directory_path)
-
+    
+    pagado = models.DateTimeField(blank=True,null=True)
+    facturado = models.DateTimeField(blank=True,null=True)
+    enviado = models.DateTimeField(blank=True,null=True)
+    
     usuario=models.ForeignKey(Usuario,related_name='sucs', on_delete=CASCADE)
     
     @property

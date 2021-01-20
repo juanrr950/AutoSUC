@@ -164,6 +164,23 @@
                 </div>
                 <hr>
                 <div class="row">
+                    <div class="col-sm-2 left-title">
+                      Estados      
+                    </div>
+                    <div class="col-sm-10">
+                        
+                        {% with form.enviado|as_crispy_field as a %}
+                        {% with form.facturado|as_crispy_field as b %}
+                        {% with form.pagado|as_crispy_field as c %}
+                        {% with "" as d %}
+                            {% include 'gentemp/4_cols_resp.html' with a=a b=b c=c d=d %}
+                        {% endwith %}{% endwith %}{% endwith %}{% endwith %}
+                        
+                        
+                    </div>  
+                </div>
+                <hr>
+                <div class="row">
                     <div class="col">
                         {% if pk %}
                         <script>

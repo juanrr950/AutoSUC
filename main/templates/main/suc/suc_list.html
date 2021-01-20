@@ -30,6 +30,14 @@ Listado de SUC
             window.location.href = "http://127.0.0.1:8000/suc/donwload_zip_sucs/"+
                                     ids+"/"
         })
+        $('#enviar_suc').click(function () {
+            
+            sele=$('#bttable').bootstrapTable('getSelections')
+            ids=""
+            sele.forEach(element => ids=ids+element.id+",")
+            window.location.href = "http://127.0.0.1:8000/suc/email_sucs/"+
+                                    ids+"/"
+        })
     })
 </script>
 <div class="card">

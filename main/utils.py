@@ -15,7 +15,13 @@ class TimeInput(forms.DateInput):
     input_type = 'time'
     def __init__(self):
         forms.DateInput.__init__(self,format=('%H:%M'))
+
         
+class DateTimeInput(forms.DateTimeInput):
+    input_type = 'datetime-local'
+    def __init__(self):
+        forms.DateTimeInput.__init__(self,format=('%Y-%m-%dT%H:%M:%S'))
+                
 def prodn( *args):
     res=1
     

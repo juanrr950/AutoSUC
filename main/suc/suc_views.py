@@ -14,6 +14,10 @@ from AutoSUC.settings import BASE_DIR
 from _io import StringIO
 from zipfile import ZipFile
 from main.suc.suc_serializer import SucSerializer
+from django.core.mail import send_mail
+from django.core.mail.message import EmailMessage
+from datetime import datetime
+
 class Suc_BT(BTView):
     def get(self, request, *args, **kwargs):
         #Sobreescribo el get para poner algunos campos solo
@@ -26,9 +30,9 @@ class Suc_BT(BTView):
     #model=Suc
     #Serializer opcional para tratar los datos antes de enviarlos a BootStrapTable.
     serializer = SucSerializer
-    field_list=('nombre','created_date','provincia',
+    field_list=('nombre','estado','provincia',
                 )
-    verbose_list=('NOMBRE','FECHA','PROVINCIA',
+    verbose_list=('NOMBRE','ESTADO','PROVINCIA',
                  )
     sort_list=('nombre','created_date','provincia')
     data_sort_name="created_date" 
@@ -161,8 +165,7 @@ def donwload_zip_suc(request,pk):
     
     return response
 
-def donwload_zip_sucs(request,ids):
-    ids=ids.split(',')
+def zips_memory_suc(ids):
     
     in_memory = io.BytesIO()
     zip = ZipFile(in_memory, "a")
@@ -170,9 +173,6 @@ def donwload_zip_sucs(request,ids):
     for i in ids:
         if i.isdigit():
             suc=Suc.objects.get(pk=i)
-            
-            
-                
             zip.write(os.path.join(BASE_DIR,
                       suc.excel.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.excel.name))
             zip.write(os.path.join(BASE_DIR,
@@ -182,14 +182,58 @@ def donwload_zip_sucs(request,ids):
             zip.write(os.path.join(BASE_DIR,
                       suc.imagen.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.imagen.name))
         
-       
    
     zip.close()
+    in_memory.seek(0)    
+    return in_memory.read()
+
+def donwload_zip_sucs(request,ids):
+    ids=ids.split(',')
+    
+    
 
     response = HttpResponse()
     response["Content-Disposition"] = "attachment; filename=BLOQUE_SUCS.zip"
     
-    in_memory.seek(0)    
-    response.write(in_memory.read())
+    zip_suc=zips_memory_suc(ids)
+    response.write(zip_suc)
     
     return response
+
+def email_sucs(request,ids):
+    ids=ids.split(',')
+       
+    zip_suc=zips_memory_suc(ids)
+    body=""
+    #nombres para el body
+    for i in ids:
+        if i.isdigit():
+            suc=Suc.objects.get(pk=i)
+            if suc.num_postes<5:
+                body=body+"<b>"+suc.nombre+" -> "+str(suc.num_postes)+" Postes</b><br>"
+            else:
+                body=body+suc.nombre+"<br>"
+    
+    #try:
+    email=EmailMessage(
+        subject='SUCs '+request.user.usuario.first_name,
+        body=body,
+        from_email='sucs@izaresoft.com',
+        to=['juanrr950@gmail.com','dalagch@gmail.com'],
+        bcc=['sucs@izaresoft.com'],
+        )
+    email.attach('Bloque SUCs.zip', zip_suc, "application/zip")
+    email.content_subtype = "html" 
+    email.send()
+    messages.success(request, "SUCs seleccionados enviados por email con éxito.")
+       
+    #except:
+          
+        #messages.error(request, "Ha habido un error durante el envío.",extra_tags='danger')
+    for i in ids:
+        if i.isdigit():
+            suc=Suc.objects.get(pk=i)
+            suc.enviado=datetime.now()
+            suc.save()
+    return redirect('list_suc',view="list") 
+        

@@ -5,7 +5,8 @@ CLASE FORM PARA FORMULARIO SIMPLE
 '''
 
 from main.models import Suc
-from main.utils import DateInput
+from main.utils import DateInput, TimeInput, DateTimeInput
+from django.forms.widgets import TextInput
 class Suc_form(ModelForm):
     class Meta:
         model = Suc
@@ -18,7 +19,8 @@ class Suc_form(ModelForm):
                 'poste_3','poste_4','poste_5',
                 'medida_1_2','medida_2_3','medida_3_4',
                 'medida_4_5','comentarios','word',
-                'excel','powerpoint','imagen']
+                'excel','powerpoint','imagen',
+                'pagado','enviado','facturado']
         widgets={
                 'fecha_ar':DateInput(),
                 'poste_1':forms.TextInput(attrs={'onchange':'comprobarPoste(event)'}),
@@ -26,10 +28,10 @@ class Suc_form(ModelForm):
                 'poste_3':forms.TextInput(attrs={'onchange':'comprobarPoste(event)'}),
                 'poste_4':forms.TextInput(attrs={'onchange':'comprobarPoste(event)'}),
                 'poste_5':forms.TextInput(attrs={'onchange':'comprobarPoste(event)'}),
-                'codigo_miga':forms.TextInput(attrs={'onchange':'obtenerCentral()'})
-                
-                
-                #'[TIPO_DATETIME]':TimeInput(),
+                'codigo_miga':forms.TextInput(attrs={'onchange':'obtenerCentral()'}),
+                'pagado':TextInput(),
+                'enviado':TextInput(),
+                'facturado':TextInput(),
                 #'comentarios':forms.Textarea(attrs={'rows':8,'style':'height:unset !important;'}),
                 
             }

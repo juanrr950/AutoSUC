@@ -14,6 +14,8 @@ import os
 import django
 from .mode import * 
 from pathlib import Path
+from django.conf.global_settings import EMAIL_HOST, EMAIL_HOST_USER,\
+    EMAIL_HOST_PASSWORD, EMAIL_USE_TLS, EMAIL_USE_SSL
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -171,3 +173,10 @@ USE_THOUSAND_SEPARATOR=True
 THOUSAND_SEPARATOR='.'
 
 NUMBER_GROUPING=3
+
+EMAIL_HOST='izaresoft.com'
+EMAIL_PORT=465
+EMAIL_HOST_USER='sucs@izaresoft.com'
+EMAIL_HOST_PASSWORD='cobragato'
+EMAIL_USE_SSL=True
+
