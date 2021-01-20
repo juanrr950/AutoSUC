@@ -6,16 +6,17 @@ name: deploy_juanas
 on: 
   # Triggers the workflow on push or pull request events but only for the dev branch
   push:
-    branches: [ master ]
+    branches: 
+      - main
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
     deployment:
       runs-on: ubuntu-latest
       steps:
-      - name: Deploy Stage
-        uses: fjogeleit/http-request-action@master
-        with:
-          url: 'http://juanas-as6404t.myasustor.com:19900/api/endpoints/1/docker/containers/autosuc_container/restart'
-          method: 'POST'
-          bearerToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJyZWZyZXNjYWRvciIsInJvbGUiOjIsImV4cCI6MTYxMTE2ODgxN30.X2RdUbHq1AJBkPZNTxJKZRc-QcVwXxOEX5tmLWviRGg'
+        - name: Deploy Stage
+          uses: fjogeleit/http-request-action@master
+          with:
+            url: 'http://juanas-as6404t.myasustor.com:19900/api/endpoints/1/docker/containers/autosuc_container/restart'
+            method: 'POST'
+            bearerToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJyZWZyZXNjYWRvciIsInJvbGUiOjIsImV4cCI6MTYxMTE2ODgxN30.X2RdUbHq1AJBkPZNTxJKZRc-QcVwXxOEX5tmLWviRGg'
