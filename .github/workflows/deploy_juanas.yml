@@ -22,7 +22,7 @@ jobs:
             method: 'POST'
             data: '{"username":"admin","password":"jarguezr1991"}'
         - name: Update Container
-          run: echo  ${{steps.getToken.outputs}}
+          run: echo  ${{steps.getToken.outputs.response.jwt}}
             
             
       
