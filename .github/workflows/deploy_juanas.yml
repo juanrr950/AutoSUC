@@ -19,4 +19,4 @@ jobs:
           with:
             url: 'http://juanas-as6404t.myasustor.com:19900/api/auth'
             method: 'POST'
-            data: {"username":"admin","password":"jarguezr1991"}
+            data: '{"username":"admin","password":"jarguezr1991"}'
