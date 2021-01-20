@@ -25,6 +25,7 @@ from django.views.static import serve
 from main.admin import adminsite
 from main.registros import registros_views
 from main.configuracion import configuracion_views
+from django.urls.conf import re_path
 
 urlpatterns = [
     #path('',views.home, name='home'),
@@ -43,6 +44,7 @@ urlpatterns = [
     path('suc/edit_suc/<pk>',  login_required(suc_views.edit_suc,'next','/accounts/login'),name='edit_suc'),
     path('suc/delete_suc/<pk>',  login_required(suc_views.delete_suc,'next','/accounts/login'),name='delete_suc'),
     path('suc/donwload_zip_suc/<pk>',  login_required(suc_views.donwload_zip_suc,'next','/accounts/login'),name='donwload_zip_suc'),
+    re_path(r'^suc/donwload_zip_sucs/(?P<ids>(\d+\,?)+)/$',  login_required(suc_views.donwload_zip_sucs,'next','/accounts/login'),name='donwload_zip_sucs'),
     
     #Registros
     path('registro/comprobar_poste/<id_poste>',

@@ -13,6 +13,7 @@ from django.http import HttpResponse
 from AutoSUC.settings import BASE_DIR
 from _io import StringIO
 from zipfile import ZipFile
+from main.suc.suc_serializer import SucSerializer
 class Suc_BT(BTView):
     def get(self, request, *args, **kwargs):
         #Sobreescribo el get para poner algunos campos solo
@@ -22,9 +23,9 @@ class Suc_BT(BTView):
     
     template_name = "main/suc/suc_list.html"
     url_json='list_suc'
-    model=Suc
+    #model=Suc
     #Serializer opcional para tratar los datos antes de enviarlos a BootStrapTable.
-    #serializer = SucSerializer
+    serializer = SucSerializer
     field_list=('nombre','created_date','provincia',
                 )
     verbose_list=('NOMBRE','FECHA','PROVINCIA',
@@ -35,6 +36,7 @@ class Suc_BT(BTView):
     search_list=('nombre','created_date','provincia')
     
     link_list=(('Editar','/suc/edit_suc/'),)
+    show_checkbox_colunm=True
     
     def get_queryset(self):
         return Suc.objects.all()
@@ -131,15 +133,11 @@ def delete_suc(request,pk):
     messages.success(request, "suc eliminado con éxito. " )
     return redirect('list_suc',view="list") 
 
+
 def donwload_zip_suc(request,pk):
     
-    
     suc=Suc.objects.get(pk=pk)
-    # Get file
-    '''
-    file=open(os.path.join(BASE_DIR,
-              suc.excel.path), 'rb')
-    '''
+    
     in_memory = io.BytesIO()
     zip = ZipFile(in_memory, "a")
         
@@ -151,17 +149,45 @@ def donwload_zip_suc(request,pk):
               suc.powerpoint.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.powerpoint.name))
     zip.write(os.path.join(BASE_DIR,
               suc.imagen.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.imagen.name))
-    #zip.writestr("file2.csv", "csv,data,here")
-    
-    # fix for Linux zip files read in Windows
-    '''
-    for file in zip.filelist:
-        file.create_system = 0    
-    '''
+   
+   
     zip.close()
 
     response = HttpResponse()
     response["Content-Disposition"] = "attachment; filename="+suc.nombre+".zip"
+    
+    in_memory.seek(0)    
+    response.write(in_memory.read())
+    
+    return response
+
+def donwload_zip_sucs(request,ids):
+    ids=ids.split(',')
+    
+    in_memory = io.BytesIO()
+    zip = ZipFile(in_memory, "a")
+        
+    for i in ids:
+        if i.isdigit():
+            suc=Suc.objects.get(pk=i)
+            
+            
+                
+            zip.write(os.path.join(BASE_DIR,
+                      suc.excel.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.excel.name))
+            zip.write(os.path.join(BASE_DIR,
+                      suc.word.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.word.name))
+            zip.write(os.path.join(BASE_DIR,
+                      suc.powerpoint.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.powerpoint.name))
+            zip.write(os.path.join(BASE_DIR,
+                      suc.imagen.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.imagen.name))
+        
+       
+   
+    zip.close()
+
+    response = HttpResponse()
+    response["Content-Disposition"] = "attachment; filename=BLOQUE_SUCS.zip"
     
     in_memory.seek(0)    
     response.write(in_memory.read())

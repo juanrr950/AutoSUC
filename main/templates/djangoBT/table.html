@@ -73,6 +73,9 @@ function estilo_celda(value, row, index, field){
 		
 	    <thead>
 	        <tr>
+                {% if show_checkbox_colunm %}
+                    <th data-checkbox="true"></th>
+                {% endif %}
 		        {% for i in field_list %}
     	        	<th class="{{i.0}}_css" data-field="{{i.0}}" {% data_sortable i.2 %} >
     	        		{{ i.1 }}

@@ -69,6 +69,7 @@ class BTView(View):
                 
         
         return dataSerializer
+    
     def add_pagination(self):
         offset=int(self.request.GET['offset'])
         limit=int(self.request.GET['limit'])
@@ -134,7 +135,8 @@ class BTView(View):
                                   'data_sort_name':self.data_sort_name,
                                   'data_sort_order':self.data_sort_order, 
                                   'link_list':self.link_list,
-                                  'cursor_row':self.cursor_row})
+                                  'cursor_row':self.cursor_row,
+                                  'show_checkbox_colunm':self.show_checkbox_colunm})
 
 
 

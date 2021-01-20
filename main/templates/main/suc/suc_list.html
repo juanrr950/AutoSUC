@@ -4,7 +4,7 @@
 {% load LBD_filter_form %}
 <meta charset="utf-8">
 {% block title %}
-Listado de SU
+Listado de SUC
 {% endblock %}
 {% block content %}
 <style>
@@ -18,16 +18,39 @@ Listado de SU
 }
 
 </style>
+<script>
+    $(document).ready(function() {
+    
+    
+        $('#descarga_suc').click(function () {
+            
+            sele=$('#bttable').bootstrapTable('getSelections')
+            ids=""
+            sele.forEach(element => ids=ids+element.id+",")
+            window.location.href = "http://127.0.0.1:8000/suc/donwload_zip_sucs/"+
+                                    ids+"/"
+        })
+    })
+</script>
 <div class="card">
     <div class="card-body">
         <div class="container-fluid">
             <div id="toolbar">
+                <button id="descarga_suc" type="button"
+                class="btn btn-primary btn-wd"
+                ><i class="fa fa-cloud-download" aria-hidden="true"></i>
+                Descargar</button>
+                <button id="enviar_suc" type="button"
+                class="btn btn-info btn-wd"
+                ><i class="fa fa-envelope-o" aria-hidden="true"></i>
+                Enviar email</button>
+                <!--
                 <a role="button"  id="btNuevo" 
                 href="/suc/new_suc" 
                 class="btn btn-info btn-wd" >
                     <i class="fa fa-plus"></i> Nuevo SUC
                 </a>
-            
+                -->
             </div>
             {{table}}
             
