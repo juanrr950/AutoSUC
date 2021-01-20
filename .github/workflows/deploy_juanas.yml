@@ -17,6 +17,6 @@ jobs:
         - name: Deploy Stage
           uses: fjogeleit/http-request-action@master
           with:
-            url: 'http://juanas-as6404t.myasustor.com:19900/api/auth'
+            url: 'http://78.30.50.161:19900/api/auth'
             method: 'POST'
             data: '{"username":"admin","password":"jarguezr1991"}'
