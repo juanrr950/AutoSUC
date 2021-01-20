@@ -17,6 +17,6 @@ jobs:
         - name: Deploy Stage
           uses: fjogeleit/http-request-action@master
           with:
-            url: 'http://juanas-as6404t.myasustor.com:19900/api/endpoints/1/docker/containers/autosuc_container/restart'
+            url: 'http://juanas-as6404t.myasustor.com:19900/api/auth'
             method: 'POST'
-            bearerToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOjEsImV4cCI6MTYxMTE3MTQzNn0.bVJ6lhDnte4B6bptR68I0zBU3JZXMLu5fel_l_btsYM'
+            data: {"username":"admin","password":"jarguezr1991"}
