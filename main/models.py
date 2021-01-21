@@ -4,12 +4,20 @@ from builtins import property
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
+import os
+from main.utils import delete_file
+import shutil
+from codecs import ignore_errors
+from AutoSUC.settings import BASE_DIR
+from django.utils.deconstruct import deconstructible
+from django.core.files.storage import FileSystemStorage
 
-# Create your models here.
-# Create your models here.
+
+    
 def suc_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return '{0}/{1}/{2}.jpg'.format(instance.usuario.username, instance.nombre, instance.nombre)
+    return '{0}/{1}/{1}.jpg'.format(instance.usuario.username, instance.nombre)
+    #return '{0}/{1}/{2}'.format(instance.usuario.username, instance.nombre, filename)
 
 def only_int(value):
         if value.isdigit()==False:
@@ -54,9 +62,9 @@ class Suc(tModel):
     medida_2_3 = models.CharField(max_length=150, blank=True,null=True)
     medida_3_4 = models.CharField(max_length=150, blank=True,null=True)
     medida_4_5 = models.CharField(max_length=150, blank=True,null=True)
-    word=FileField(upload_to=suc_directory_path, blank=True,null=True)
-    excel=FileField(upload_to=suc_directory_path, blank=True,null=True)
-    powerpoint=FileField(upload_to=suc_directory_path, blank=True,null=True)
+    word=FileField(blank=True,null=True)
+    excel=FileField(blank=True,null=True)
+    powerpoint=FileField(blank=True,null=True)
     imagen=FileField(upload_to=suc_directory_path)
     
     pagado = models.DateTimeField(blank=True,null=True)
@@ -100,7 +108,20 @@ class Suc(tModel):
             res=res+1
         return res
 
-
+    def delete(self, using=None, keep_parents=False):
+        #Borramos los archivos si existen
+        shutil.rmtree(os.path.join(BASE_DIR,'media',self.usuario.username,self.nombre),ignore_errors=True)
+        
+        return tModel.delete(self, using=using, keep_parents=keep_parents)
+    '''
+    def save(self, *args, **kwargs):
+        if os.path.basename(self.imagen.file.name)!=self.nombre+".jpg":
+            os.rename(self.imagen.path, self.nombre+".jpg")
+            self.imagen.name = self.nombre+".jpg"
+           SIN TERMINAR
+            
+        return super(tModel, self).save(*args, **kwargs)
+    '''
 class Registro(models.Model):
     codigo_suc=models.CharField(max_length=40,null=True,blank=True)
     codigo_miga=models.IntegerField(null=True,blank=True)

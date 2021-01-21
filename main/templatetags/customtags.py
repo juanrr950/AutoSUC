@@ -13,9 +13,10 @@ register.filter('path',path)
 
 @register.filter
 def filename(value):
-    return os.path.basename(value.file.name)
-
-
+    try:
+        return os.path.basename(value.file.name)
+    except: 
+        return "Fichero no encontrado en el sistema de almacenamiento"
 
 @register.simple_tag(name='data_sortable')
 def data_sortable(value):

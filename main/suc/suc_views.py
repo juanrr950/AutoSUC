@@ -112,9 +112,16 @@ def edit_suc(request,pk):
             suc.save()
             messages.success(request, "Suc modificado con éxito. ")
             generar_suc(suc)
-            
-            
-            return redirect('list_suc',view="list") 
+            return redirect('list_suc',view="list")
+            '''
+            if os.path.exists(str(BASE_DIR)+suc.imagen.url):
+                messages.success(request, "Suc modificado con éxito. ")
+                generar_suc(suc)
+                return redirect('list_suc',view="list")
+            else:    
+                messages.error(request, "Imagen no encontrada en sistema, carguela de nuevo.",extra_tags='danger')
+            '''
+             
         
         else:
             messages.error(request, "Corrija los campos en rojo.",extra_tags='danger')
@@ -131,6 +138,7 @@ def delete_suc(request,pk):
     usuario = request.user.usuario
     
     #COMPROBAR PERMISOS DE USUARIO
+    
     suc=get_object_or_404(Suc,pk=pk)
     suc.delete()
         

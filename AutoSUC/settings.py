@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django.forms',
     'rest_framework',
+    'django_cleanup.apps.CleanupConfig',
     #'fontawesome-free',
     #'audit'
 ]
@@ -180,3 +181,4 @@ EMAIL_HOST_USER='sucs@izaresoft.com'
 EMAIL_HOST_PASSWORD='cobragato'
 EMAIL_USE_SSL=True
 
+DEFAULT_FILE_STORAGE = 'main.storage.CustomFileSystemStorage'

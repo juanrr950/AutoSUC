@@ -2,6 +2,7 @@ from django import forms
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm, cm
 import locale
+import os
 
 
 class CalculoException(Exception):
@@ -108,3 +109,8 @@ def formatES(value):
         return locale.format_string('%.2f', value, grouping=True, monetary=False)
     else:
         return ""
+    
+def delete_file(path):
+    if os.path.isfile(path):
+        os.remove(path)
+        

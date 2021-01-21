@@ -133,20 +133,26 @@
                     <div class="col-sm-10">
                         {{form.imagen|as_crispy_field}}
                         {% if pk %}
+                            {% if form.instance.excel %}
                             <a href="/media/{{form.instance.excel}}" >
                                 <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                                 {{form.instance.excel|filename}}
                             </a> <br/>
+                            {% endif %}
+                            {% if form.instance.word %}
                             <a href="/media/{{form.instance.word}}" >
                                 <i class="fa fa-file-word-o" aria-hidden="true"></i>
                                 {{form.instance.word|filename}}
                                 </a>
                             <br/>
+                            {% endif %}
+                            {% if form.instance.powerpoint %}
                             <a href="/media/{{form.instance.powerpoint}}" >
                             <i class="fa fa-file-powerpoint-o" aria-hidden="true"></i>
                             {{form.instance.powerpoint|filename}}
                             </a>
                             <br/>
+                            {% endif %}
                             <a href="/suc/donwload_zip_suc/{{pk}}" role="button" 
                                 class="btn btn-wd btn-info">
                                 <span class="btn-label">
@@ -186,10 +192,10 @@
                         <script>
                             function delete_object(){
                                 confirmDialog(
-                                    "¿Eliminar [CLASS_NAME] {{form.instance.codigo}}?",
+                                    "¿Eliminar SUX {{form.instance.nombre}}?",
                                     `Confirme para eliminar completamente. \r\n
                                      `,
-                                    "/[RUTA_ELIMINAR]/delete_[class_name]/{{pk}}");
+                                    "/suc/delete_suc/{{pk}}");
                             }
                         </script>
                         <button type="button" onclick="delete_object();"

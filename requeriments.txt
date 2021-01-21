@@ -6,3 +6,4 @@ reportlab==3.5.45
 python-docx==0.8.10
 python-pptx==0.6.18
 openpyxl==3.0.5
+django-cleanup==5.1.0
