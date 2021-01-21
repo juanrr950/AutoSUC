@@ -25,7 +25,7 @@ from django.views.static import serve
 from main.admin import adminsite
 from main.registros import registros_views
 from main.configuracion import configuracion_views
-from django.urls.conf import re_path
+from django.urls.conf import re_path, include
 
 urlpatterns = [
     #path('',views.home, name='home'),
@@ -33,6 +33,7 @@ urlpatterns = [
     path('',login_required(views.example,'next','/accounts/login'), name='example'),
     path('accounts/login/',views.login.as_view(),name='login'),
     path('logout/',auth_views.LogoutView.as_view(),name='logout'),
+    path('tinymce/', include('tinymce.urls')),
     
     path('central/obtener_central/<codigo_miga>',
            login_required(views.obtener_central,
@@ -45,7 +46,7 @@ urlpatterns = [
     path('suc/delete_suc/<pk>',  login_required(suc_views.delete_suc,'next','/accounts/login'),name='delete_suc'),
     path('suc/donwload_zip_suc/<pk>',  login_required(suc_views.donwload_zip_suc,'next','/accounts/login'),name='donwload_zip_suc'),
     re_path(r'^suc/donwload_zip_sucs/(?P<ids>(\d+\,?)+)/$',  login_required(suc_views.donwload_zip_sucs,'next','/accounts/login'),name='donwload_zip_sucs'),
-    re_path(r'^suc/email_sucs/(?P<ids>(\d+\,?)+)/$',  login_required(suc_views.email_sucs, 'next','/accounts/login'),name='email_sucs'),
+    re_path(r'^suc/new_email_sucs/(?P<ids>(\d+\,?)+)/$',  login_required(suc_views.new_email_sucs, 'next','/accounts/login'),name='new_email_sucs'),
     
     #Registros
     path('registro/comprobar_poste/<id_poste>',

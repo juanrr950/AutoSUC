@@ -5,7 +5,6 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
 import os
-from main.utils import delete_file
 import shutil
 from codecs import ignore_errors
 from AutoSUC.settings import BASE_DIR
@@ -66,12 +65,19 @@ class Suc(tModel):
     excel=FileField(blank=True,null=True)
     powerpoint=FileField(blank=True,null=True)
     imagen=FileField(upload_to=suc_directory_path)
+    tiempo=models.IntegerField(blank=True,null=True)
     
     pagado = models.DateTimeField(blank=True,null=True)
     facturado = models.DateTimeField(blank=True,null=True)
     enviado = models.DateTimeField(blank=True,null=True)
-    
+    estado= models.CharField(max_length=1,
+        choices=(('R','Realizado'),('E','Enviado'),
+                 ('F','Facturado'),('P','Pagado'),
+                 ('A','Anulada'),), 
+        default="R")
+    #Usuario que lo realiza
     usuario=models.ForeignKey(Usuario,related_name='sucs', on_delete=CASCADE)
+    asignado=models.ForeignKey(Usuario,related_name='sucs_asignados', on_delete=CASCADE)
     
     @property
     def poste_1_id(self):
@@ -113,15 +119,65 @@ class Suc(tModel):
         shutil.rmtree(os.path.join(BASE_DIR,'media',self.usuario.username,self.nombre),ignore_errors=True)
         
         return tModel.delete(self, using=using, keep_parents=keep_parents)
-    '''
-    def save(self, *args, **kwargs):
-        if os.path.basename(self.imagen.file.name)!=self.nombre+".jpg":
-            os.rename(self.imagen.path, self.nombre+".jpg")
-            self.imagen.name = self.nombre+".jpg"
-           SIN TERMINAR
+    
+    def clean(self):
+        #Validamos que no haya postes repetido en el form
+        campo=""
+        campo2=""
+        if self.poste_1 in self.poste_2:
+            campo='poste_2'
+            campo2="poste_1"
+        elif self.poste_1==self.poste_3:
+            campo='poste_3'    
+            campo2="poste_1"
+        elif self.poste_1==self.poste_4:
+            campo='poste_4' 
+            campo2="poste_1"
+        elif self.poste_1==self.poste_5:
+            campo='poste_5' 
+            campo2="poste_1"
+        elif self.poste_2==self.poste_3:
+            campo='poste_3' 
+            campo2="poste_2"
+        elif self.poste_2==self.poste_4:
+            campo='poste_4' 
+            campo2="poste_2"
+        elif self.poste_2==self.poste_5:
+            campo='poste_5' 
+            campo2="poste_2"
+        elif self.poste_3==self.poste_4:
+            campo='poste_4' 
+            campo2="poste_3"
+        elif self.poste_3==self.poste_5:
+            campo='poste_5' 
+            campo2="poste_3"
+        elif self.poste_4==self.poste_5:
+            campo='poste_5'
+            campo2="poste_4"
             
-        return super(tModel, self).save(*args, **kwargs)
-    '''
+            
+        if campo!="":
+            raise ValidationError({campo: ('Ha introducido dos postes con la misma ID'),
+                                   campo2: ('Ha introducido dos postes con la misma ID'),})
+        
+        
+        def check_poste_repetido(id_poste,campo):
+            if Registro.objects.filter(id_poste=id_poste).exists():
+                poste=Registro.objects.get(id_poste=id_poste)
+                return {campo: 'Poste repetido con '+poste.codigo_suc,}
+            else:
+                return {}
+       
+        errores=dict(**check_poste_repetido(self.poste_1_id,"poste_1"),
+        **check_poste_repetido(self.poste_2_id,"poste_2"), 
+        **check_poste_repetido(self.poste_3_id,"poste_3"), 
+        **check_poste_repetido(self.poste_4_id,"poste_4"), 
+        **check_poste_repetido(self.poste_5_id,"poste_5") )
+        
+        if bool(errores):
+            raise ValidationError(errores)  
+        
+        
 class Registro(models.Model):
     codigo_suc=models.CharField(max_length=40,null=True,blank=True)
     codigo_miga=models.IntegerField(null=True,blank=True)
@@ -130,3 +186,11 @@ class Registro(models.Model):
 class Central(models.Model):
     codigo_miga = models.CharField(max_length=50,unique=True)
     nombre_central = models.CharField(max_length=150)
+    
+    def __str__(self):
+        return 
+class Ajuste(tModel):
+    nombre=models.CharField(unique=True, max_length=150)
+    valor=models.CharField(max_length=250)
+    def __str__(self):
+        return self.nombre+" -> "+self.valor

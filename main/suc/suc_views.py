@@ -2,21 +2,24 @@
 METODO DE LISTADO SIMPLE
 '''
 from main.djangoBT.views import BTView
-from main.models import Suc
+from main.models import Suc, Ajuste
 from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
-from main.suc.suc_form import Suc_form
+from main.suc.suc_form import Suc_form, email_form
 from main.suc.generar_suc import generar_suc
 from main.suc.carga_registro import cargar_registros_txt
 import os, io
 from django.http import HttpResponse
-from AutoSUC.settings import BASE_DIR
+from AutoSUC.settings import BASE_DIR, EMAIL_HOST_USER
 from _io import StringIO
 from zipfile import ZipFile
 from main.suc.suc_serializer import SucSerializer
 from django.core.mail import send_mail
 from django.core.mail.message import EmailMessage
 from datetime import datetime
+from main.utils import get_ajuste, list_integer_from_string,\
+    list_string_from_string
+from main.suc.zip import zips_memory_suc
 
 class Suc_BT(BTView):
     def get(self, request, *args, **kwargs):
@@ -30,14 +33,15 @@ class Suc_BT(BTView):
     #model=Suc
     #Serializer opcional para tratar los datos antes de enviarlos a BootStrapTable.
     serializer = SucSerializer
-    field_list=('nombre','estado','provincia',
+    field_list=('nombre','estado','created_date','provincia','tiempo',
+                'asignado'
                 )
-    verbose_list=('NOMBRE','ESTADO','PROVINCIA',
-                 )
-    sort_list=('nombre','created_date','provincia')
+    verbose_list=('NOMBRE','ESTADO','FECHA REALIZADO','PROVINCIA','TIEMPO'
+                 ,'ASIGNADO')
+    sort_list=('nombre','estado','created_date','provincia','tiempo','asignado__first_name')
     data_sort_name="created_date" 
     data_sort_order="desc" 
-    search_list=('nombre','created_date','provincia')
+    search_list=('nombre','estado','created_date','provincia','asignado__first_name')
     
     link_list=(('Editar','/suc/edit_suc/'),)
     show_checkbox_colunm=True
@@ -173,32 +177,10 @@ def donwload_zip_suc(request,pk):
     
     return response
 
-def zips_memory_suc(ids):
-    
-    in_memory = io.BytesIO()
-    zip = ZipFile(in_memory, "a")
-        
-    for i in ids:
-        if i.isdigit():
-            suc=Suc.objects.get(pk=i)
-            zip.write(os.path.join(BASE_DIR,
-                      suc.excel.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.excel.name))
-            zip.write(os.path.join(BASE_DIR,
-                      suc.word.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.word.name))
-            zip.write(os.path.join(BASE_DIR,
-                      suc.powerpoint.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.powerpoint.name))
-            zip.write(os.path.join(BASE_DIR,
-                      suc.imagen.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.imagen.name))
-        
-   
-    zip.close()
-    in_memory.seek(0)    
-    return in_memory.read()
+
 
 def donwload_zip_sucs(request,ids):
     ids=ids.split(',')
-    
-    
 
     response = HttpResponse()
     response["Content-Disposition"] = "attachment; filename=BLOQUE_SUCS.zip"
@@ -208,40 +190,62 @@ def donwload_zip_sucs(request,ids):
     
     return response
 
-def email_sucs(request,ids):
-    ids=ids.split(',')
-       
-    zip_suc=zips_memory_suc(ids)
-    body=""
-    #nombres para el body
-    for i in ids:
-        if i.isdigit():
-            suc=Suc.objects.get(pk=i)
-            if suc.num_postes<5:
-                body=body+"<b>"+suc.nombre+" -> "+str(suc.num_postes)+" Postes</b><br>"
-            else:
-                body=body+suc.nombre+"<br>"
+def new_email_sucs(request,ids):
+    #limpiamos ids
+    lids=list_integer_from_string(ids)
     
-    #try:
-    email=EmailMessage(
-        subject='SUCs '+request.user.usuario.first_name,
-        body=body,
-        from_email='sucs@izaresoft.com',
-        to=['juanrr950@gmail.com','dalagch@gmail.com'],
-        bcc=['sucs@izaresoft.com'],
-        )
-    email.attach('Bloque SUCs.zip', zip_suc, "application/zip")
-    email.content_subtype = "html" 
-    email.send()
-    messages.success(request, "SUCs seleccionados enviados por email con éxito.")
-       
-    #except:
-          
-        #messages.error(request, "Ha habido un error durante el envío.",extra_tags='danger')
-    for i in ids:
-        if i.isdigit():
-            suc=Suc.objects.get(pk=i)
-            suc.enviado=datetime.now()
-            suc.save()
-    return redirect('list_suc',view="list") 
+    sucs=Suc.objects.filter(id__in=lids)
+    
+    #COMPROBAR AQUI SI TIENE LOS PERMISOS NECESARIOS
+    if request.method == 'POST':
+        form=email_form(request.POST)
+        if form.is_valid():
+            if enviar_email(sucs,form):
+                messages.success(request, "SUCs enviados con éxito.")
+                return redirect('list_suc',view="list") 
+            else:
+                messages.error(request, "Ha habido un error durante el envío.",extra_tags='danger')
+        else:
+            messages.error(request, "Corrija los campos en rojo.",extra_tags='danger')
+    else:
+        sucs=Suc.objects.filter(id__in=lids)
+        body=""
+        for i in sucs:
+            if i.num_postes<5:
+                body=body+"<b>"+i.nombre+" -> "+str(i.num_postes)+" Postes</b><br>"
+            else:
+                body=body+i.nombre+"<br>"
+                
+        form=email_form(initial={'para':get_ajuste("destino_email_pordefecto"),
+                                 'cco':get_ajuste("copia_email_pordefecto"),
+                                 'asunto':"Bloque SUCs "+request.user.first_name,
+                                 'cuerpo':body})
+         
+    return render(request,'main/suc/suc_mail_form.html',
+                  {'form':form,
+                   })    
+def enviar_email(sucs,form):
+    
+    zip_suc=zips_memory_suc(sucs)
+    
+    try:
+        email=EmailMessage(
+            subject=form.cleaned_data['asunto'],
+            body=form.cleaned_data['cuerpo'],
+            from_email=EMAIL_HOST_USER,
+            to=list_string_from_string(form.cleaned_data['para']),
+            bcc=list_string_from_string(form.cleaned_data['cco']),
+            )
+        email.attach('Bloque SUCs.zip', zip_suc, "application/zip")
+        email.content_subtype = "html" 
+        email.send()
         
+       
+        for suc in sucs:
+            suc.enviado=datetime.now()
+            suc.estado='E'
+            suc.save()
+        return True
+    except:
+        return False
+    

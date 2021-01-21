@@ -42,14 +42,19 @@ def cargar_registros_excel():
             print("LLevamos "+str(i)+" de "+str(total)+
                   ", un "+str(round(i/total,2)*100)+" % en "+
                   str((time.time()-inicio)/60)+" min")
-            
+        
+#ESTA ESTOY USANDO    
+'''
+EL FORMATO DE LINEAS DE SUR:
+[CODIGO SUC];[CÓDIGO MIGA];[ID POSTE]
+'''        
 def cargar_registros_txt():
     print("Comenzamos abriendo el archivo")
     inicio=time.time()
     
     f = open(os.path.join(BASE_DIR,
-                            'media/registros/postes2.csv'), "r")
-    print("Archivo abierto en "+str((time.time()-inicio)/60)+" min")    
+                            'media/registros/Robot_Tesa_Union5.csv'), "r")
+    print("Archivo abierto en "+str((time.time()-inicio))+" s")    
     
     registros=[]
     i=0
@@ -64,14 +69,18 @@ def cargar_registros_txt():
         if poste.isdigit():
             poste=int(poste)
             if poste>0 and poste< 4294967295 :
-                
+                miga=linea[1]
+                if not miga.isdigit():
+                    miga=0
                 registros.append(Registro(id_poste=poste,
-                                          codigo_miga=linea[1],
+                                          codigo_miga=miga,
                                           codigo_suc=linea[0]))
                 if i%2000==0:
-                    Registro.objects.bulk_create(registros,
+                    devuelve=Registro.objects.bulk_create(registros,
                                                   ignore_conflicts=True)
                     registros=[]
+                    
+                    #print(len(devuelve))
             else: 
                 print("Excluido poste: "+x)    
         else:
@@ -80,8 +89,11 @@ def cargar_registros_txt():
         if i%2000==0:
             print("LLevamos "+str(i)+"  lineas, en "+
                   str((time.time()-inicio)/60)+" min")
-           
-    print("LLevamos "+str(i)+"  lineas, en "+
-                  str((time.time()-inicio)/60)+" min") 
+            
+    
     Registro.objects.bulk_create(registros,
                             ignore_conflicts=True)
+    print("LLevamos "+str(i)+"  lineas, en "+
+                  str((time.time()-inicio)/60)+" min") 
+    
+    

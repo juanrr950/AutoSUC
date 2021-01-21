@@ -1,0 +1,45 @@
+{% extends 'main/master.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load LBD_filter_form %}
+{% load customtags %}
+<meta charset="utf-8">
+{% block title %}
+    Enviar SUC por mail from: suc@izaresoft.com
+    
+{% endblock %}
+{% block imports %}
+
+{% endblock %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <div class="container-fluid">
+            
+            {{form.media}}
+            <form id="form_suc" class="form-horizontal" enctype="multipart/form-data" method="post" novalidate>
+                {% csrf_token %}
+                {{form.para|as_crispy_field}}
+                {{form.cco|as_crispy_field}}
+                {{form.asunto|as_crispy_field}}
+                <hr>
+                {{form.cuerpo|as_crispy_field}}
+                
+                <hr>
+                <div class="row">
+                    <div class="col">
+                        <div style="text-align:right;">
+                            
+                            <button type="submit" class="btn btn-fill btn-success btn-wd">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                            Enviar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -7,6 +7,10 @@ CLASE FORM PARA FORMULARIO SIMPLE
 from main.models import Suc
 from main.utils import DateInput, TimeInput, DateTimeInput
 from django.forms.widgets import TextInput
+from django.forms.forms import Form
+from reportlab.platypus.para import Para
+from tinymce.widgets import TinyMCE
+
 class Suc_form(ModelForm):
     class Meta:
         model = Suc
@@ -20,7 +24,8 @@ class Suc_form(ModelForm):
                 'medida_1_2','medida_2_3','medida_3_4',
                 'medida_4_5','comentarios','word',
                 'excel','powerpoint','imagen',
-                'pagado','enviado','facturado']
+                'pagado','enviado','facturado','estado',
+                'tiempo','asignado']
         widgets={
                 'fecha_ar':DateInput(),
                 'poste_1':forms.TextInput(attrs={'onchange':'comprobarPoste(event)'}),
@@ -32,6 +37,15 @@ class Suc_form(ModelForm):
                 'pagado':TextInput(),
                 'enviado':TextInput(),
                 'facturado':TextInput(),
+                'tiempo':forms.HiddenInput()
                 #'comentarios':forms.Textarea(attrs={'rows':8,'style':'height:unset !important;'}),
                 
             }
+        
+class email_form(Form):
+    
+    para=forms.CharField(label="Destinatario")
+    cco=forms.CharField(label="En copia oculta")
+    asunto=forms.CharField(label="Asunto")
+    cuerpo = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
+    

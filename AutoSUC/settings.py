@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django.forms',
     'rest_framework',
-    'django_cleanup.apps.CleanupConfig',
+    'tinymce',
+    #'django_cleanup.apps.CleanupConfig',
     #'fontawesome-free',
     #'audit'
 ]

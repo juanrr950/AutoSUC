@@ -3,6 +3,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm, cm
 import locale
 import os
+from main.models import Ajuste
 
 
 class CalculoException(Exception):
@@ -114,3 +115,23 @@ def delete_file(path):
     if os.path.isfile(path):
         os.remove(path)
         
+    
+def get_ajuste(nombre):
+    return Ajuste.objects.get(nombre=nombre).valor
+
+def list_integer_from_string(string):
+    string=string.split(',')
+    lids=[]
+    for i in string:
+        if i.isdigit():
+            lids.append(int(i))
+    return lids
+
+def list_string_from_string(string):
+    string=string.split(',')
+    lids=[]
+    for i in string:
+        if i!="" or i!=None:
+            lids.append(i)
+    return lids
+    

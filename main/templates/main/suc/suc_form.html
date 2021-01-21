@@ -14,7 +14,25 @@
 {% endblock %}
 {% block imports %}
 <script src="{% static 'js/form_suc.js' %}" type="text/javascript"></script>
+
+{% if not pk %}
     
+<script>
+var start="";
+$( document ).ready(function() {
+    // Handler for .ready() called.
+    start = Date.now();
+    
+    $("#form_suc").submit(function() {
+      // Handler for .ready() called.
+      var end = Date.now();
+      var seg=(end-start)/1000;
+      $("#id_tiempo").val(Math.round(seg));
+      
+    });
+});
+</script>    
+{% endif %}
 {% endblock %}
 {% block content %}
 
@@ -25,13 +43,14 @@
             Descomentar si el formulario tiene archivos
                 {{form.media}}
             {% endcomment %}
-            <form class="form-horizontal" enctype="multipart/form-data" method="post" novalidate>
+            <form id="form_suc" class="form-horizontal" enctype="multipart/form-data" method="post" novalidate>
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-sm-2 left-title">
                       Datos SUC      
                     </div>
                     <div class="col-sm-10">
+                        {{form.tiempo}}
                         {% with form.nombre|as_crispy_field as a %}
                         {% with form.car_ftth_iua|as_crispy_field as b %}
                         {% with form.fecha_ar|as_crispy_field as c %}
@@ -39,10 +58,10 @@
                             {% include 'gentemp/4_cols_resp.html' with a=a b=b c=c d=d %}
                         {% endwith %}{% endwith %}{% endwith %}{% endwith %}
                         
-                        {% with form.poste_central|as_crispy_field as a %}
-                        {% with form.plantilla|as_crispy_field as b %}
-                        {% with form.comentarios|as_crispy_field as c %}
-                        {% with "" as d %}
+                        {% with  form.asignado|as_crispy_field as a %}
+                        {% with form.poste_central|as_crispy_field as b %}
+                        {% with form.plantilla|as_crispy_field as c %}
+                        {% with form.comentarios|as_crispy_field as d %}
                             {% include 'gentemp/4_cols_resp.html' with a=a b=b c=c d=d %}
                         {% endwith %}{% endwith %}{% endwith %}{% endwith %}
                                                                                             
@@ -175,10 +194,10 @@
                     </div>
                     <div class="col-sm-10">
                         
-                        {% with form.enviado|as_crispy_field as a %}
-                        {% with form.facturado|as_crispy_field as b %}
-                        {% with form.pagado|as_crispy_field as c %}
-                        {% with "" as d %}
+                        {% with form.estado|as_crispy_field as a %}
+                        {% with form.enviado|as_crispy_field as b %}
+                        {% with form.facturado|as_crispy_field as c %}
+                        {% with form.pagado|as_crispy_field as d %}
                             {% include 'gentemp/4_cols_resp.html' with a=a b=b c=c d=d %}
                         {% endwith %}{% endwith %}{% endwith %}{% endwith %}
                         
@@ -204,7 +223,10 @@
                                 <i class="fa fa-trash"></i>
                             </span>
                             Eliminar
-                        </button>
+                        </button> 
+                        {% if form.instance.tiempo %}
+                            Realizado {{form.instance.tiempo}} seg.
+                        {% endif %}
                         {% endif %}
                     </div>
                     <div class="col">

@@ -7,3 +7,4 @@ python-docx==0.8.10
 python-pptx==0.6.18
 openpyxl==3.0.5
 django-cleanup==5.1.0
+django-tinymce==3.2.0
