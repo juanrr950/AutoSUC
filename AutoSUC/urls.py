@@ -23,9 +23,11 @@ from django.conf import settings
 from django.conf.urls import url
 from django.views.static import serve
 from main.admin import adminsite
-from main.registros import registros_views
+
 from main.configuracion import configuracion_views
 from django.urls.conf import re_path, include
+from main.central import central_views
+from main.registro import registro_views
 
 urlpatterns = [
     #path('',views.home, name='home'),
@@ -50,14 +52,26 @@ urlpatterns = [
     
     #Registros
     path('registro/comprobar_poste/<id_poste>',
-           login_required(registros_views.comprobar_id_poste,
+           login_required(registro_views.comprobar_id_poste,
                            'next','/accounts/login'),name='comprobar_poste'),
     
+    #Centrals
+    path('central/list/<view>',  login_required(central_views.Central_BT.as_view(),'next','/accounts/login'),name='list_central'),
+    path('central/new_central',  login_required(central_views.new_central,'next','/accounts/login'),name='new_central'),
+    path('central/edit_central/<pk>',  login_required(central_views.edit_central,'next','/accounts/login'),name='edit_central'),
+    path('central/delete_central/<pk>',  login_required(central_views.delete_central,'next','/accounts/login'),name='delete_central'),
     #Configuración
     path('configuracion/cargar_postes',
            login_required(configuracion_views.cargar_postes,
                            'next','/accounts/login'),name='cargar_postes'),
     
+    #Registros
+    path('registro/list/<view>',  login_required(registro_views.Registro_BT.as_view(),'next','/accounts/login'),name='list_registro'),
+    path('registro/new_registro',  login_required(registro_views.new_registro,'next','/accounts/login'),name='new_registro'),
+    path('registro/edit_registro/<pk>',  login_required(registro_views.edit_registro,'next','/accounts/login'),name='edit_registro'),
+    path('registro/delete_registro/<pk>',  login_required(registro_views.delete_registro,'next','/accounts/login'),name='delete_registro'),
+    
+                           
 ]
 if settings.DEBUG:
     urlpatterns += [

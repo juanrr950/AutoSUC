@@ -138,21 +138,28 @@
                 <ul class="nav">
                     
                     <li class="nav-item {% if request|path:1 == 'dashboard'%}active{% endif %}">
-                        <a class="nav-link" href="/dashboard">
+                        <a class="nav-link" href="/">
                             <i class="nc-icon nc-chart-pie-35"></i>
                             <p>DASHBOARD</p>
                         </a>
                     </li>
-                    <li class="nav-item {% if request|path:2 == 'new_suc'%}active{% endif %}">
-                        <a class="nav-link" href="/suc/new_suc">
-                            <i class="nc-icon nc-single-copy-04"></i>
-                            <p>NUEVO SUC</p>
-                        </a>
-                    </li>
-                    <li class="nav-item {% if request|path:2 == 'list_suc'%}active{% endif %}">
+                    
+                    <li class="nav-item {% if request|path:1 == 'suc'%}active{% endif %}">
                         <a class="nav-link" href="/suc/list/list">
                             <i class="nc-icon nc-bullet-list-67"></i>
-                            <p>REALIZADOS</p>
+                            <p>SUCS</p>
+                        </a>
+                    </li>
+                    <li class="nav-item {% if request|path:1 == 'central'%}active{% endif %}">
+                        <a class="nav-link" href="/central/list/list">
+                            <i class="nc-icon nc-bank"></i>
+                            <p>CENTRALES</p>
+                        </a>
+                    </li>
+                    <li class="nav-item {% if request|path:1 == 'registro'%}active{% endif %}">
+                        <a class="nav-link" href="/registro/list/list">
+                            <i class="nc-icon nc-circle"></i>
+                            <p>REGISTRO DE POSTES</p>
                         </a>
                     </li>
                     <li class="nav-item">

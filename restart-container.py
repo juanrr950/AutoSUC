@@ -15,5 +15,7 @@ r = requests.post('http://juanas-as6404t.myasustor.com:19900'+
                 '/api/endpoints/1/docker/containers/'+contenedor+'/restart',
                   headers=authorization)
 
-r.status_code==204:
-      print("Contenedor reiniciado satisfactoriamente")
+if r.status_code==204:
+    print("Contenedor reiniciado satisfactoriamente")
+else:
+    print("Respuesta estado html: "r.status_code)

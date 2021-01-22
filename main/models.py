@@ -121,6 +121,7 @@ class Suc(tModel):
         return tModel.delete(self, using=using, keep_parents=keep_parents)
     
     def clean(self):
+        '''
         #Validamos que no haya postes repetido en el form
         campo=""
         campo2=""
@@ -160,7 +161,7 @@ class Suc(tModel):
             raise ValidationError({campo: ('Ha introducido dos postes con la misma ID'),
                                    campo2: ('Ha introducido dos postes con la misma ID'),})
         
-        
+        '''
         def check_poste_repetido(id_poste,campo):
             if Registro.objects.filter(id_poste=id_poste).exists():
                 poste=Registro.objects.get(id_poste=id_poste)
@@ -182,13 +183,15 @@ class Registro(models.Model):
     codigo_suc=models.CharField(max_length=40,null=True,blank=True)
     codigo_miga=models.IntegerField(null=True,blank=True)
     id_poste=models.IntegerField(unique=True)
+    def __str__(self):
+        return str(self.id_poste)
     
 class Central(models.Model):
     codigo_miga = models.CharField(max_length=50,unique=True)
     nombre_central = models.CharField(max_length=150)
     
     def __str__(self):
-        return 
+        return self.codigo_miga+" "+self.nombre_central
 class Ajuste(tModel):
     nombre=models.CharField(unique=True, max_length=150)
     valor=models.CharField(max_length=250)

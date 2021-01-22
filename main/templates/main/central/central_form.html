@@ -1,0 +1,72 @@
+{% extends 'main/master.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load LBD_filter_form %}
+<meta charset="utf-8">
+{% block title %}
+    {% if pk %}
+    Central <b>{{form.instance}}</b>
+    {% else %}
+        Nuevo central
+    {% endif %}
+    
+{% endblock %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <div class="container-fluid">
+            {% comment %}
+            Descomentar si el formulario tiene archivos
+                {{form.media}}
+            {% endcomment %}
+            <form class="form-horizontal" enctype="multipart/form-data" method="post" novalidate>
+                {% csrf_token %}
+                <div class="row justify-content-center">
+                    
+                    <div class="col-3 align-self-center">
+                        {{ form.codigo_miga|as_crispy_field }}
+{{ form.nombre_central|as_crispy_field }}
+  
+                    </div>  
+                </div>
+                
+                 
+                <hr>
+                <div class="row">
+                    <div class="col">
+                        {% if pk %}
+                        <script>
+                            function delete_object(){
+                                confirmDialog(
+                                    "¿Eliminar Central {{form.instance}}?",
+                                    `Confirme para eliminar completamente. \r\n
+                                     `,
+                                    "/central/delete_central/{{form.instance.id}}");
+                            }
+                        </script>
+                        <button type="button" onclick="delete_object();"
+                         class="btn btn-wd btn-danger btn-outline">
+                            <span class="btn-label">
+                                <i class="fa fa-trash"></i>
+                            </span>
+                            Eliminar
+                        </button>
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        <div style="text-align:right;">
+                        <a href="/central/list/list" >Listado de Central</a>&nbsp&nbsp&nbsp
+                        <button type="submit" class="btn btn-fill btn-info btn-wd">
+                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                        Guardar 
+                        </button>
+                        </div>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
