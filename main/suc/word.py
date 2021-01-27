@@ -28,13 +28,19 @@ def generar_word(suc):
     replace_string(doc, "_CENTRALYMIGA_", suc.nombre_central.upper()+" "+suc.codigo_miga)
     replace_string(doc, "_NOMBRET_", suc.nombre_tecnico.upper())
     replace_string(doc, "_APELLIDO1_", suc.apellido_tecnico.upper())
-    replace_string(doc, "_APELLIDO2_ ", suc.segundo_apellido_tecnico.upper())
+    if suc.segundo_apellido_tecnico:
+        replace_string(doc, "_APELLIDO2_ ", suc.segundo_apellido_tecnico.upper())
+    
     replace_string(doc, "_DNIT_", suc.dni_tecnico.upper())
     replace_string(doc, "_CODIGOFIBRAFTTH_", str(suc.car_ftth_iua))
     replace_string(doc, "_NPOSTES_", str(suc.num_postes))
-    replace_string(doc, "_NOMBRECOMPLETOT_", suc.nombre_tecnico.upper()+
-                   " "+suc.apellido_tecnico.upper()+
-                   " "+suc.segundo_apellido_tecnico.upper())
+    if suc.segundo_apellido_tecnico:
+        replace_string(doc, "_NOMBRECOMPLETOT_", suc.nombre_tecnico.upper()+
+                       " "+suc.apellido_tecnico.upper()+
+                       " "+suc.segundo_apellido_tecnico.upper())
+    else:
+        replace_string(doc, "_NOMBRECOMPLETOT_", suc.nombre_tecnico.upper()+
+                       " "+suc.apellido_tecnico.upper())
     postes=suc.poste_1_id+"\n"+suc.poste_2_id
     if suc.num_postes>=3:
         postes=postes+"\n"+suc.poste_3_id
