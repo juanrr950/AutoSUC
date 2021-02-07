@@ -88,7 +88,7 @@ def generar_powerpoint(suc):
     nombreppt=nombreppt[-11:]
     pres.save(os.path.join(BASE_DIR,
                         'media/'+suc.usuario.username+'/'+
-                        suc.nombre+'/'+nombreppt+'.pptx'))
+                        suc.nombre+'/'+nombreppt+'.ppt'))
     
-    suc.powerpoint=suc.usuario.username+'/'+suc.nombre+'/'+nombreppt+'.pptx'
+    suc.powerpoint=suc.usuario.username+'/'+suc.nombre+'/'+nombreppt+'.ppt'
     suc.save()

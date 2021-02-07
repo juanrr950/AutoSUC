@@ -151,29 +151,14 @@ def delete_suc(request,pk):
 
 
 def donwload_zip_suc(request,pk):
-    
-    suc=Suc.objects.get(pk=pk)
-    
-    in_memory = io.BytesIO()
-    zip = ZipFile(in_memory, "a")
-        
-    zip.write(os.path.join(BASE_DIR,
-              suc.excel.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.excel.name))
-    zip.write(os.path.join(BASE_DIR,
-              suc.word.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.word.name))
-    zip.write(os.path.join(BASE_DIR,
-              suc.powerpoint.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.powerpoint.name))
-    zip.write(os.path.join(BASE_DIR,
-              suc.imagen.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.imagen.name))
-   
-   
-    zip.close()
-
+    list=[]
+    list.append(pk)
+    zip_suc=zips_memory_suc(list)
     response = HttpResponse()
+    suc=Suc.objects.get(pk=int(pk))
     response["Content-Disposition"] = "attachment; filename="+suc.nombre+".zip"
-    
-    in_memory.seek(0)    
-    response.write(in_memory.read())
+  
+    response.write(zip_suc)
     
     return response
 
@@ -181,7 +166,7 @@ def donwload_zip_suc(request,pk):
 
 def donwload_zip_sucs(request,ids):
     ids=ids.split(',')
-
+    
     response = HttpResponse()
     response["Content-Disposition"] = "attachment; filename=BLOQUE_SUCS.zip"
     

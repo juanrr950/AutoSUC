@@ -53,7 +53,7 @@ def generar_word(suc):
     
     doc.save(os.path.join(BASE_DIR,
                         'media/'+suc.usuario.username+'/'+
-                        suc.nombre+'/'+suc.nombre+'.docx'))
+                        suc.nombre+'/'+suc.nombre+'.doc'))
     
-    suc.word=suc.usuario.username+'/'+suc.nombre+'/'+suc.nombre+'.docx'
+    suc.word=suc.usuario.username+'/'+suc.nombre+'/'+suc.nombre+'.doc'
     suc.save()

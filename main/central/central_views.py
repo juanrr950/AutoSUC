@@ -94,6 +94,7 @@ def edit_central(request,pk):
             central=form.save(commit=False)
             #ASIGNAR AQUI CLASE RELACIONADA SI ES NECESARIO
             central.save()
+            form.save_m2m()
             messages.success(request, "Central modificada con éxito. ")
             
             return redirect('list_central',view="list") 

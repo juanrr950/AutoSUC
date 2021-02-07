@@ -11,7 +11,7 @@ def cargar_registros_excel():
     print("Comenzamos abriendo el archivo")
     inicio=time.time()
     workbook = load_workbook(filename=os.path.join(BASE_DIR,
-                            'media/registros/Robot_Tesa_Union.xlsx'))
+                            'media/registros/Robot_Tesa_Union7.xlsx'))
     
     print("Archivo abierto en "+str((time.time()-inicio)/60)+" min")    
     total=571362
@@ -49,11 +49,12 @@ EL FORMATO DE LINEAS DE SUR:
 [CODIGO SUC];[CÓDIGO MIGA];[ID POSTE]
 '''        
 def cargar_registros_txt():
-    print("Comenzamos abriendo el archivo")
+    inicio=str(Registro.objects.count())
+    print("Comenzamos abriendo el archivo, "+inicio+" nº de registro actuales")
     inicio=time.time()
     
     f = open(os.path.join(BASE_DIR,
-                            'media/registros/Robot_Tesa_Union5.csv'), "r")
+                            'media/registros/Robot_Tesa_Union7.csv'), "r")
     print("Archivo abierto en "+str((time.time()-inicio))+" s")    
     
     registros=[]
@@ -96,4 +97,6 @@ def cargar_registros_txt():
     print("LLevamos "+str(i)+"  lineas, en "+
                   str((time.time()-inicio)/60)+" min") 
     
+    fin=Registro.objects.count()
     
+    print(str(fin-inicio)+" registros se han cargado nuevos")

@@ -1,3 +1,9 @@
+from xlrd import open_workbook
+from xlutils.copy import copy
+import os
+from AutoSUC.settings import BASE_DIR
+
+
 from openpyxl import load_workbook
 import os
 from AutoSUC.settings import BASE_DIR
