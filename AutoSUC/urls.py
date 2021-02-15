@@ -28,6 +28,7 @@ from main.configuracion import configuracion_views
 from django.urls.conf import re_path, include
 from main.central import central_views
 from main.registro import registro_views
+from main.configuracion.carga_masiva import carga_masiva_views
 
 urlpatterns = [
     #path('',views.home, name='home'),
@@ -61,10 +62,12 @@ urlpatterns = [
     path('central/edit_central/<pk>',  login_required(central_views.edit_central,'next','/accounts/login'),name='edit_central'),
     path('central/delete_central/<pk>',  login_required(central_views.delete_central,'next','/accounts/login'),name='delete_central'),
     #Configuración
-    path('configuracion/cargar_postes',
-           login_required(configuracion_views.cargar_postes,
-                           'next','/accounts/login'),name='cargar_postes'),
-    
+
+    path('configuracion/carga_masiva/list/<view>',  login_required(carga_masiva_views.Carga_masiva_BT.as_view(),'next','/accounts/login'),name='list_carga_masiva'),
+    path('configuracion/carga_masiva/new_carga_masiva',  login_required(carga_masiva_views.new_carga_masiva,'next','/accounts/login'),name='new_carga_masiva'),
+    path('configuracion/carga_masiva/edit_carga_masiva/<pk>',  login_required(carga_masiva_views.edit_carga_masiva,'next','/accounts/login'),name='edit_carga_masiva'),
+    path('configuracion/carga_masiva/delete_carga_masiva/<pk>',  login_required(carga_masiva_views.delete_carga_masiva,'next','/accounts/login'),name='delete_carga_masiva'),
+
     #Registros
     path('registro/list/<view>',  login_required(registro_views.Registro_BT.as_view(),'next','/accounts/login'),name='list_registro'),
     path('registro/new_registro',  login_required(registro_views.new_registro,'next','/accounts/login'),name='new_registro'),

@@ -1,12 +1,13 @@
+from main.models import Carga_masiva
 from django.forms.models import ModelForm
 from django import forms
 '''
 CLASE FORM PARA FORMULARIO SIMPLE
 '''
-class [CLASS_NAME]_form(ModelForm):
+class Carga_masiva_form(ModelForm):
     class Meta:
-        model = [CLASS_NAME]
-        fields=[campos]
+        model = Carga_masiva
+        fields=('csv',)
         '''
         widgets={
                 '[TIPO_DATE]':DateInput(),

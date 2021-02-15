@@ -4,7 +4,7 @@
 {% load LBD_filter_form %}
 <meta charset="utf-8">
 {% block title %}
-Listado de [class_name]
+Listado de carga_masiva
 {% endblock %}
 {% block content %}
 <style>
@@ -21,11 +21,18 @@ Listado de [class_name]
 <div class="card">
     <div class="card-body">
         <div class="container-fluid">
+        
+            <p>
+            EL ARCHIVO DEBE TENER EL FORMATO CSV DE EXCEL. <br>
+            FORMATO DE LINEAS:
+            CODIGO_SUC;CÓDIGO_MIGA;ID_POSTE
+              
+            </p>
             <div id="toolbar">
                 <a role="button"  id="btNuevo" 
-                href="/[ruta]/new_[class_name]" 
+                href="/configuracion/carga_masiva/new_carga_masiva" 
                 class="btn btn-info btn-wd" >
-                    <i class="fa fa-plus"></i> Nuevo [class_name]
+                    <i class="fa fa-plus"></i> Nuevo carga_masiva
                 </a>
             
             </div>

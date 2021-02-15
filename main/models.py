@@ -58,10 +58,20 @@ class Suc(tModel):
     poste_3 = models.CharField(max_length=150, blank=True,null=True)
     poste_4 = models.CharField(max_length=150, blank=True,null=True)
     poste_5 = models.CharField(max_length=150, blank=True,null=True)
+    poste_6 = models.CharField(max_length=150, blank=True,null=True)
+    poste_7 = models.CharField(max_length=150, blank=True,null=True)
+    poste_8 = models.CharField(max_length=150, blank=True,null=True)
+    poste_9 = models.CharField(max_length=150, blank=True,null=True)
+    poste_10 = models.CharField(max_length=150, blank=True,null=True)
     medida_1_2 = models.CharField(max_length=150)
     medida_2_3 = models.CharField(max_length=150, blank=True,null=True)
     medida_3_4 = models.CharField(max_length=150, blank=True,null=True)
     medida_4_5 = models.CharField(max_length=150, blank=True,null=True)
+    medida_5_6 = models.CharField(max_length=150, blank=True,null=True)
+    medida_6_7 = models.CharField(max_length=150, blank=True,null=True)
+    medida_7_8 = models.CharField(max_length=150, blank=True,null=True)
+    medida_8_9 = models.CharField(max_length=150, blank=True,null=True)
+    medida_9_10 = models.CharField(max_length=150, blank=True,null=True)
     word=FileField(blank=True,null=True)
     excel=FileField(blank=True,null=True)
     powerpoint=FileField(blank=True,null=True)
@@ -105,6 +115,40 @@ class Suc(tModel):
         else:
             return None
     @property
+    def poste_6_id(self):
+        if self.poste_5!=None:
+            return self.poste_6.split('(ID ')[1].split(')')[0]
+        else:
+            return None
+        
+    @property
+    def poste_7_id(self):
+        if self.poste_5!=None:
+            return self.poste_7.split('(ID ')[1].split(')')[0]
+        else:
+            return None
+        
+    @property
+    def poste_8_id(self):
+        if self.poste_5!=None:
+            return self.poste_8.split('(ID ')[1].split(')')[0]
+        else:
+            return None
+        
+    @property
+    def poste_9_id(self):
+        if self.poste_5!=None:
+            return self.poste_9.split('(ID ')[1].split(')')[0]
+        else:
+            return None
+        
+    @property
+    def poste_10_id(self):
+        if self.poste_5!=None:
+            return self.poste_10.split('(ID ')[1].split(')')[0]
+        else:
+            return None
+    @property
     def num_postes(self):
         res=2
         if self.poste_3!=None:
@@ -112,6 +156,16 @@ class Suc(tModel):
         if self.poste_4!=None:    
             res=res+1
         if self.poste_5!=None:
+            res=res+1
+        if self.poste_6!=None:
+            res=res+1
+        if self.poste_7!=None:
+            res=res+1
+        if self.poste_8!=None:
+            res=res+1
+        if self.poste_9!=None:
+            res=res+1
+        if self.poste_10!=None:
             res=res+1
         return res
 
@@ -180,3 +234,14 @@ class Ajuste(tModel):
     valor=models.CharField(max_length=250)
     def __str__(self):
         return self.nombre+" -> "+self.valor
+    
+class Carga_masiva(tModel):
+    csv=FileField(upload_to='cargas_masivas')
+    inicio=models.DateTimeField(blank=True,null=True)
+    fin=models.DateTimeField(blank=True,null=True)
+    lineas_total=models.IntegerField(blank=True,null=True)
+    registros_nuevos=models.IntegerField(blank=True,null=True)
+    porcentaje_completado=models.IntegerField(blank=True,null=True)
+    estado= models.CharField(max_length=1,
+        choices=(('P','PROCESANDO'),('T','TERMINADO'),('E','ERROR')), default="P")
+    

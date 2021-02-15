@@ -95,12 +95,19 @@ $( document ).ready(function() {
                         {% with form.poste_1|as_crispy_field as a %}
                         {% with form.poste_2|as_crispy_field as b %}
                         {% with form.poste_3|as_crispy_field as c %}
-                        {% with "" as d %}
+                        {% with form.poste_4|as_crispy_field as d %}
                             {% include 'gentemp/4_cols_resp.html' with a=a b=b c=c d=d %}
                         {% endwith %}{% endwith %}{% endwith %}{% endwith %}
                         
-                        {% with form.poste_4|as_crispy_field as a %}
-                        {% with form.poste_5|as_crispy_field as b %}
+                        {% with form.poste_5|as_crispy_field as a %}
+                        {% with form.poste_6|as_crispy_field as b %}
+                        {% with form.poste_7|as_crispy_field as c %}
+                        {% with form.poste_8|as_crispy_field as d %}
+                            {% include 'gentemp/4_cols_resp.html' with a=a b=b c=c d=d %}
+                        {% endwith %}{% endwith %}{% endwith %}{% endwith %}
+                        
+                        {% with form.poste_9|as_crispy_field as a %}
+                        {% with form.poste_10|as_crispy_field as b %}
                         {% with "" as c %}
                         {% with "" as d %}
                             {% include 'gentemp/4_cols_resp.html' with a=a b=b c=c d=d %}
@@ -111,9 +118,21 @@ $( document ).ready(function() {
                         {% with form.medida_3_4|as_crispy_field as c %}
                         {% with form.medida_4_5|as_crispy_field as d %}
                             {% include 'gentemp/4_cols_resp.html' with a=a b=b c=c d=d %}
+                        {% endwith %}{% endwith %}{% endwith %}{% endwith %}.
+                        
+                        {% with form.medida_5_6|as_crispy_field as a %}
+                        {% with form.medida_6_7|as_crispy_field as b %}
+                        {% with form.medida_7_8|as_crispy_field as c %}
+                        {% with form.medida_8_9|as_crispy_field as d %}
+                            {% include 'gentemp/4_cols_resp.html' with a=a b=b c=c d=d %}
                         {% endwith %}{% endwith %}{% endwith %}{% endwith %}
                         
-                        
+                        {% with form.medida_9_10|as_crispy_field as a %}
+                        {% with "" as b %}
+                        {% with "" as c %}
+                        {% with "" as d %}
+                            {% include 'gentemp/4_cols_resp.html' with a=a b=b c=c d=d %}
+                        {% endwith %}{% endwith %}{% endwith %}{% endwith %}
                     </div>  
                 </div>
                 <div class="row">

@@ -4,7 +4,8 @@ from AutoSUC.settings import BASE_DIR
 from main.models import Registro
 import time
 import re
-
+from django.utils.timezone import now
+from datetime import datetime
 
 
 def cargar_registros_excel():
@@ -48,14 +49,21 @@ def cargar_registros_excel():
 EL FORMATO DE LINEAS DE SUR:
 [CODIGO SUC];[CÓDIGO MIGA];[ID POSTE]
 '''        
-def cargar_registros_txt():
-    inicio=str(Registro.objects.count())
-    print("Comenzamos abriendo el archivo, "+inicio+" nº de registro actuales")
+def cargar_registros_txt(carga_masiva):
+    reg_inicio=Registro.objects.count()
+    print("Comenzamos abriendo el archivo, "+str(reg_inicio)+" nº de registro actuales")
     inicio=time.time()
+    carga_masiva.inicio=datetime.now() 
     
-    f = open(os.path.join(BASE_DIR,
-                            'media/registros/Robot_Tesa_Union7.csv'), "r")
-    print("Archivo abierto en "+str((time.time()-inicio))+" s")    
+    f = open(carga_masiva.csv.file.name, "r")
+    
+    lineas_totales=len(f.readlines())
+    f.seek(0)
+    carga_masiva.lineas_total=lineas_totales
+    carga_masiva.save()
+    
+    print("Archivo abierto en "+str((time.time()-inicio))+" s, total lineas:"+str(lineas_totales) )   
+    
     
     registros=[]
     i=0
@@ -82,21 +90,28 @@ def cargar_registros_txt():
                     registros=[]
                     
                     #print(len(devuelve))
+        '''    
             else: 
                 print("Excluido poste: "+x)    
         else:
             print("Excluido poste: "+x)    
-        
-        if i%2000==0:
+        '''
+        if i%50000==0:
             print("LLevamos "+str(i)+"  lineas, en "+
                   str((time.time()-inicio)/60)+" min")
+            porc=round(i/lineas_totales*100)
+            carga_masiva.porcentaje_completado=porc
+            carga_masiva.save()
             
-    
     Registro.objects.bulk_create(registros,
                             ignore_conflicts=True)
     print("LLevamos "+str(i)+"  lineas, en "+
                   str((time.time()-inicio)/60)+" min") 
     
-    fin=Registro.objects.count()
+    reg_fin=Registro.objects.count()
     
-    print(str(fin-inicio)+" registros se han cargado nuevos")
+    print(str(reg_fin-reg_inicio)+" registros se han cargado nuevos")
+    
+    carga_masiva.registro_nuevos=reg_fin-reg_inicio
+    carga_masiva.estado='T'
+    carga_masiva.save()
