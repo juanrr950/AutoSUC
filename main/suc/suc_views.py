@@ -178,14 +178,14 @@ def donwload_zip_sucs(request,ids):
 def new_email_sucs(request,ids):
     #limpiamos ids
     lids=list_integer_from_string(ids)
-    
+    ids=ids.split(',')
     sucs=Suc.objects.filter(id__in=lids)
     
     #COMPROBAR AQUI SI TIENE LOS PERMISOS NECESARIOS
     if request.method == 'POST':
         form=email_form(request.POST)
         if form.is_valid():
-            if enviar_email(sucs,form):
+            if enviar_email(ids,form):
                 messages.success(request, "SUCs enviados con éxito.")
                 return redirect('list_suc',view="list") 
             else:
@@ -209,9 +209,9 @@ def new_email_sucs(request,ids):
     return render(request,'main/suc/suc_mail_form.html',
                   {'form':form,
                    })    
-def enviar_email(sucs,form):
+def enviar_email(ids,form):
     
-    zip_suc=zips_memory_suc(sucs)
+    zip_suc=zips_memory_suc(ids)
     
     try:
         email=EmailMessage(
@@ -221,7 +221,7 @@ def enviar_email(sucs,form):
             to=list_string_from_string(form.cleaned_data['para']),
             bcc=list_string_from_string(form.cleaned_data['cco']),
             )
-        email.attach('Bloque SUCs.zip', zip_suc, "application/zip")
+        email.attach('SUCs.zip', zip_suc, "application/zip")
         email.content_subtype = "html" 
         email.send()
         

@@ -34,7 +34,7 @@ class Usuario(User,tModel):
     edad=models.IntegerField(blank=True, null=True)
 
 class Suc(tModel):
-    nombre = models.CharField(max_length=150)
+    nombre = models.CharField(max_length=150,unique=True)
     via = models.CharField(max_length=150, null=True, blank=True)
     tipo_via = models.CharField(max_length=150, null=True, blank=True)
     provincia = models.CharField(max_length=150)
