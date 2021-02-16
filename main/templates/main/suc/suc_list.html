@@ -27,7 +27,7 @@ Listado de SUC
             sele=$('#bttable').bootstrapTable('getSelections')
             ids=""
             sele.forEach(element => ids=ids+element.id+",")
-            window.location.href = "http://127.0.0.1:8000/suc/donwload_zip_sucs/"+
+            window.location.href = "/suc/donwload_zip_sucs/"+
                                     ids+"/"
         })
         $('#enviar_suc').click(function () {
@@ -35,7 +35,7 @@ Listado de SUC
             sele=$('#bttable').bootstrapTable('getSelections')
             ids=""
             sele.forEach(element => ids=ids+element.id+",")
-            window.location.href = "http://127.0.0.1:8000/suc/new_email_sucs/"+
+            window.location.href = "/suc/new_email_sucs/"+
                                     ids+"/"
         })
     })
