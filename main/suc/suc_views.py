@@ -211,10 +211,8 @@ def new_email_sucs(request,ids):
         sucs=Suc.objects.filter(id__in=lids)
         body=""
         for i in sucs:
-            if i.num_postes<5:
-                body=body+"<b>"+i.nombre+" -> "+str(i.num_postes)+" Postes</b><br>"
-            else:
-                body=body+i.nombre+"<br>"
+            body=body+"<b>"+i.nombre+" -> "+str(i.num_postes)+" Postes</b><br>"
+            
                 
         form=email_form(initial={'para':get_ajuste("destino_email_pordefecto"),
                                  'cco':get_ajuste("copia_email_pordefecto"),
@@ -228,24 +226,25 @@ def enviar_email(sucs,form):
     
     zip_suc=zips_memory_suc(sucs)
     
-    try:
-        email=EmailMessage(
-            subject=form.cleaned_data['asunto'],
-            body=form.cleaned_data['cuerpo'],
-            from_email=EMAIL_HOST_USER,
-            to=list_string_from_string(form.cleaned_data['para']),
-            bcc=list_string_from_string(form.cleaned_data['cco']),
-            )
-        email.attach('Bloque SUCs.zip', zip_suc, "application/zip")
-        email.content_subtype = "html" 
-        email.send()
-        
+    
+    email=EmailMessage(
+        subject=form.cleaned_data['asunto'],
+        body=form.cleaned_data['cuerpo'],
+        from_email=EMAIL_HOST_USER,
+        to=list_string_from_string(form.cleaned_data['para']),
+        bcc=list_string_from_string(form.cleaned_data['cco']),
+        )
+    email.attach('Bloque SUCs.zip', zip_suc, "application/zip")
+    email.content_subtype = "html" 
+    email.send()
+    res=True
+    
+    for suc in sucs:
+        suc.enviado=datetime.now()
+        suc.estado='E'
+        suc.save()
+  
        
-        for suc in sucs:
-            suc.enviado=datetime.now()
-            suc.estado='E'
-            suc.save()
-        return True
-    except:
-        return False
+      
+    return res
     
