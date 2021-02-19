@@ -5,9 +5,9 @@
 <meta charset="utf-8">
 {% block title %}
     {% if pk %}
-    [CLASS_NAME] <b>{{form.instance}}</b>
+    Carga_masiva <b>{{form.instance}}</b>
     {% else %}
-        Nuevo [class_name]
+        Nuevo carga_masiva
     {% endif %}
     
 {% endblock %}
@@ -17,8 +17,6 @@
     <div class="card-body">
         <div class="container-fluid">
             {% comment %}
-                Descomentar si el formulario tiene archivos
-                {{form.media}}
                 
                 {% with form.campo1|as_crispy_field as a %}
                 {% with form.campo2|as_crispy_field as b %}
@@ -27,12 +25,14 @@
                     {% include 'gentemp/4_cols_resp.html' with a=a b=b c=c d=d %}
                 {% endwith %}{% endwith %}{% endwith %}{% endwith %}
             {% endcomment %}
+            {{form.media}}
             <form class="form-horizontal" enctype="multipart/form-data" method="post" novalidate>
                 {% csrf_token %}
                 <div class="row justify-content-center">
                     
                     <div class="col-3 align-self-center">
-                        [campos_fom]  
+                        {{ form.csv|as_crispy_field }}
+  
                     </div>  
                 </div>
                 
@@ -44,10 +44,10 @@
                         <script>
                             function delete_object(){
                                 confirmDialog(
-                                    "¿Eliminar [CLASS_NAME] {{form.instance.codigo}}?",
+                                    "¿Eliminar Carga_masiva {{form.instance.codigo}}?",
                                     `Confirme para eliminar completamente. \r\n
                                      `,
-                                    "/[ruta]/delete_[class_name]/{{form.instance.id}}");
+                                    "/configuracion/carga_masiva/delete_carga_masiva/{{form.instance.id}}");
                             }
                         </script>
                         <button type="button" onclick="delete_object();"
@@ -61,7 +61,7 @@
                     </div>
                     <div class="col">
                         <div style="text-align:right;">
-                        <a href="/[ruta]/list/list" >Listado de [CLASS_NAME]</a>&nbsp&nbsp&nbsp
+                        <a href="/configuracion/carga_masiva/list/list" >Listado de Carga_masiva</a>&nbsp&nbsp&nbsp
                         <button type="submit" class="btn btn-fill btn-info btn-wd">
                         <i class="fa fa-floppy-o" aria-hidden="true"></i>
                         Guardar 

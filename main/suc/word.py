@@ -28,13 +28,20 @@ def generar_word(suc):
     replace_string(doc, "_CENTRALYMIGA_", suc.nombre_central.upper()+" "+suc.codigo_miga)
     replace_string(doc, "_NOMBRET_", suc.nombre_tecnico.upper())
     replace_string(doc, "_APELLIDO1_", suc.apellido_tecnico.upper())
-    replace_string(doc, "_APELLIDO2_ ", suc.segundo_apellido_tecnico.upper())
+    if suc.segundo_apellido_tecnico:
+        replace_string(doc, "_APELLIDO2_ ", suc.segundo_apellido_tecnico.upper())
+    else:
+        replace_string(doc, "_APELLIDO2_ ", "")
     replace_string(doc, "_DNIT_", suc.dni_tecnico.upper())
     replace_string(doc, "_CODIGOFIBRAFTTH_", str(suc.car_ftth_iua))
     replace_string(doc, "_NPOSTES_", str(suc.num_postes))
-    replace_string(doc, "_NOMBRECOMPLETOT_", suc.nombre_tecnico.upper()+
-                   " "+suc.apellido_tecnico.upper()+
-                   " "+suc.segundo_apellido_tecnico.upper())
+    if suc.segundo_apellido_tecnico:
+        replace_string(doc, "_NOMBRECOMPLETOT_", suc.nombre_tecnico.upper()+
+                       " "+suc.apellido_tecnico.upper()+
+                       " "+suc.segundo_apellido_tecnico.upper())
+    else:
+        replace_string(doc, "_NOMBRECOMPLETOT_", suc.nombre_tecnico.upper()+
+                       " "+suc.apellido_tecnico.upper())
     postes=suc.poste_1_id+"\n"+suc.poste_2_id
     if suc.num_postes>=3:
         postes=postes+"\n"+suc.poste_3_id
@@ -42,12 +49,22 @@ def generar_word(suc):
         postes=postes+"\n"+suc.poste_4_id
     if suc.num_postes>=5:
         postes=postes+"\n"+suc.poste_5_id
+    if suc.num_postes>=6:
+        postes=postes+"\n"+suc.poste_6_id
+    if suc.num_postes>=7:
+        postes=postes+"\n"+suc.poste_7_id
+    if suc.num_postes>=8:
+        postes=postes+"\n"+suc.poste_8_id
+    if suc.num_postes>=9:
+        postes=postes+"\n"+suc.poste_9_id
+    if suc.num_postes>=10:
+        postes=postes+"\n"+suc.poste_10_id
     
     replace_string(doc, "_IDDEPOSTES_", postes)
     
     doc.save(os.path.join(BASE_DIR,
                         'media/'+suc.usuario.username+'/'+
-                        suc.nombre+'/'+suc.nombre+'.docx'))
+                        suc.nombre+'/'+suc.nombre+'.doc'))
     
-    suc.word=suc.usuario.username+'/'+suc.nombre+'/'+suc.nombre+'.docx'
+    suc.word=suc.usuario.username+'/'+suc.nombre+'/'+suc.nombre+'.doc'
     suc.save()

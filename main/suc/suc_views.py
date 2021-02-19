@@ -151,29 +151,14 @@ def delete_suc(request,pk):
 
 
 def donwload_zip_suc(request,pk):
-    
-    suc=Suc.objects.get(pk=pk)
-    
-    in_memory = io.BytesIO()
-    zip = ZipFile(in_memory, "a")
-        
-    zip.write(os.path.join(BASE_DIR,
-              suc.excel.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.excel.name))
-    zip.write(os.path.join(BASE_DIR,
-              suc.word.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.word.name))
-    zip.write(os.path.join(BASE_DIR,
-              suc.powerpoint.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.powerpoint.name))
-    zip.write(os.path.join(BASE_DIR,
-              suc.imagen.path), suc.provincia+"/"+suc.ciudad+"/"+suc.nombre+"/"+os.path.basename(suc.imagen.name))
-   
-   
-    zip.close()
-
+    list=[]
+    list.append(pk)
+    zip_suc=zips_memory_suc(list)
     response = HttpResponse()
+    suc=Suc.objects.get(pk=int(pk))
     response["Content-Disposition"] = "attachment; filename="+suc.nombre+".zip"
-    
-    in_memory.seek(0)    
-    response.write(in_memory.read())
+  
+    response.write(zip_suc)
     
     return response
 
@@ -181,7 +166,7 @@ def donwload_zip_suc(request,pk):
 
 def donwload_zip_sucs(request,ids):
     ids=ids.split(',')
-
+    
     response = HttpResponse()
     response["Content-Disposition"] = "attachment; filename=BLOQUE_SUCS.zip"
     
@@ -193,14 +178,14 @@ def donwload_zip_sucs(request,ids):
 def new_email_sucs(request,ids):
     #limpiamos ids
     lids=list_integer_from_string(ids)
-    
+    ids=ids.split(',')
     sucs=Suc.objects.filter(id__in=lids)
     
     #COMPROBAR AQUI SI TIENE LOS PERMISOS NECESARIOS
     if request.method == 'POST':
         form=email_form(request.POST)
         if form.is_valid():
-            if enviar_email(sucs,form):
+            if enviar_email(ids,form):
                 messages.success(request, "SUCs enviados con éxito.")
                 return redirect('list_suc',view="list") 
             else:
@@ -222,11 +207,10 @@ def new_email_sucs(request,ids):
     return render(request,'main/suc/suc_mail_form.html',
                   {'form':form,
                    })    
-def enviar_email(sucs,form):
+def enviar_email(ids,form):
     
-    zip_suc=zips_memory_suc(sucs)
-    
-    
+    zip_suc=zips_memory_suc(ids)
+
     email=EmailMessage(
         subject=form.cleaned_data['asunto'],
         body=form.cleaned_data['cuerpo'],
@@ -238,13 +222,14 @@ def enviar_email(sucs,form):
     email.content_subtype = "html" 
     email.send()
     res=True
+    lids=list_integer_from_string(ids)
+    sucs=Suc.objects.filter(id__in=lids)
     
     for suc in sucs:
         suc.enviado=datetime.now()
         suc.estado='E'
         suc.save()
-  
-       
+
       
     return res
     

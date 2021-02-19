@@ -84,7 +84,13 @@
         });
     </script>
     -->
-    
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+        });
+    </script>
     {% block imports %}
     
     {% endblock %}
@@ -172,8 +178,8 @@
                         </a>
                         <div class="collapse {% if request|path:1 == 'configuracion'%}show{% endif %}" id="Configuracion">
                             <ul class="nav">
-                                <li class="nav-item {% if request|path:2 == 'cargar_postes'%}active{% endif %}">
-                                    <a class="nav-link" href="/configuracion/cargar_postes">
+                                <li class="nav-item {% if request|path:2 == 'carga_masiva'%}active{% endif %}">
+                                    <a class="nav-link" href="/configuracion/carga_masiva/list/list">
                                         <span class="sidebar-mini">CP</span>
                                         <span class="sidebar-normal">Cargar Postes</span>
                                     </a>

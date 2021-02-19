@@ -13,7 +13,7 @@ class [CLASS_NAME]_BT(BTView):
         
         return super().get( request, *args, **kwargs)
     
-    template_name = "main/[class_name]/[class_name]_list.html"
+    template_name = "main/[ruta]/[class_name]_list.html"
     url_json='list_[class_name]'
     serializer = [CLASS_NAME]_serializer
     field_list=[campos]
@@ -24,7 +24,7 @@ class [CLASS_NAME]_BT(BTView):
     search_list=[campos]
     show_checkbox_colunm= False
     
-    link_list=(('Editar','/[class_name]/edit_[class_name]/'),)
+    link_list=(('Editar','/[ruta]/edit_[class_name]/'),)
     
     def get_queryset(self):
         return [CLASS_NAME].objects.all()
@@ -69,7 +69,7 @@ def new_[class_name](request):
     else:
         form=[CLASS_NAME]_form()
          
-    return render(request,'main/[class_name]/[class_name]_form.html',
+    return render(request,'main/[ruta]/[class_name]_form.html',
                   {'form':form,
                    })    
 
@@ -100,7 +100,7 @@ def edit_[class_name](request,pk):
     else:
         form=[CLASS_NAME]_form(instance=[class_name])
          
-    return render(request,'main/[class_name]/[class_name]_form.html',
+    return render(request,'main/[ruta]/[class_name]_form.html',
                   {'form':form,
                    'pk':[class_name].id
                    }) 

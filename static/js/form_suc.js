@@ -1,34 +1,38 @@
 
 function rellenarCampos(){
-   var campos=$("#txtaData").val().split(String.fromCharCode(9));
-   //console.log(campos);
+    var campos=$("#txtaData").val().split(String.fromCharCode(9));
+    //console.log(campos);
+    
+    $("#id_cto").val(campos[3]);
+    $("#id_provincia").val(campos[4]);
+    //Poblacion es lo mismo que la ciudad
+    $("#id_poste_central").val(campos[6]);
+    $("#id_comentarios").val(campos[7]);
+    $("#id_tipo_via").val(campos[8]);
+    $("#id_via").val(campos[9]);
+    $("#id_numero_via").val(campos[10]);
+    $("#id_nombre").val(campos[11]);
+    
+    $("#id_ciudad").val(campos[13]);
+    var f=campos[14].split('/');
+    if( f[2].length>2){
+        var fecha= f[2]+"-"+f[1]+"-"+f[0];
+    }else{
+        var fecha= "20"+f[2]+"-"+f[1]+"-"+f[0];
+    } 
    
-   $("#id_cto").val(campos[3]);
-   $("#id_provincia").val(campos[4]);
-   //Poblacion es lo mismo que la ciudad
-   $("#id_poste_central").val(campos[6]);
-   $("#id_comentarios").val(campos[7]);
-   $("#id_tipo_via").val(campos[8]);
-   $("#id_via").val(campos[9]);
-   $("#id_numero_via").val(campos[10]);
-   $("#id_nombre").val(campos[11]);
-   
-   $("#id_ciudad").val(campos[13]);
-   var f=campos[14].split('/');
-   
-   var fecha= "20"+f[2]+"-"+f[1]+"-"+f[0];
-   $("#id_fecha_ar").val(fecha);
-   $("#id_car_ftth_iua").val(campos[15]);
-   
-   var nombretc=campos[16];
-   var nombret=nombretc.split(",")[1];
-   var apellido1t=nombretc.split(",")[0].split(" ")[0];
-   var apellido2t=nombretc.split(",")[0].split(" ")[1];
-   
-   $("#id_nombre_tecnico").val(nombret);
-   $("#id_apellido_tecnico").val(apellido1t);
-   $("#id_segundo_apellido_tecnico").val(apellido2t);
-   $("#id_dni_tecnico").val(campos[17]);
+    $("#id_fecha_ar").val(fecha);
+    $("#id_car_ftth_iua").val(campos[15]);
+    
+    var nombretc=campos[16];
+    var nombret=nombretc.split(",")[1];
+    var apellido1t=nombretc.split(",")[0].split(" ")[0];
+    var apellido2t=nombretc.split(",")[0].split(" ")[1];
+    
+    $("#id_nombre_tecnico").val(nombret);
+    $("#id_apellido_tecnico").val(apellido1t);
+    $("#id_segundo_apellido_tecnico").val(apellido2t);
+    $("#id_dni_tecnico").val(campos[17]);
     
 }
 

@@ -1,20 +1,26 @@
 import os
-from AutoSUC.settings import BASE_DIR
+
 import shutil
 from pathlib import Path
+from AutoSUC.settings import BASE_DIR
 
 '''
 Genera archivos encesarios para un CRUD básico en Django
 
 '''
-def generar_CRUD(modelo, campos_list, campos_form):
+def generar_CRUD(modelo, campos_list, campos_form, base_path=""):
     modelo=modelo.lower()
     Modelo=modelo.capitalize()
     
     path_actual=os.path.join(Path(__file__).resolve().parent,'plantillas')
-    path_py=os.path.join(BASE_DIR,'main',modelo)
-    path_html=os.path.join(BASE_DIR,'main','templates','main',modelo)
+    path_py=os.path.join(BASE_DIR,'main',base_path,modelo)
+    path_html=os.path.join(BASE_DIR,'main','templates','main',base_path,modelo)
     
+    if base_path!="":
+        ruta=base_path+"/"+modelo
+    else:
+        ruta=modelo
+        
     #Creamos la carpeta de los archivos python si no existe
     if not os.path.isdir(path_py):
         os.mkdir(path_py)
@@ -28,12 +34,13 @@ def generar_CRUD(modelo, campos_list, campos_form):
     
     #Primero añadimos los import
     data="from main.models import "+Modelo+"\n"+\
-        "from main."+modelo+"."+modelo+"_forms import "+Modelo+"_form\n"+\
-        "from main."+modelo+"."+modelo+"_serializers import "+Modelo+"_serializer\n"+data
+        "from main."+base_path+"."+modelo+"."+modelo+"_forms import "+Modelo+"_form\n"+\
+        "from main."+base_path+"."+modelo+"."+modelo+"_serializers import "+Modelo+"_serializer\n"+data
     
     #Sustituimos el nombre del modelop y los campos
     data=data.replace('[CLASS_NAME]', Modelo)
     data=data.replace('[class_name]', modelo)
+    data=data.replace('[ruta]', ruta)
     data=data.replace('[campos]', str(campos_list))
     data=data.replace('[CAMPOS]', str(campos_list).upper())
         
@@ -65,7 +72,8 @@ def generar_CRUD(modelo, campos_list, campos_form):
     
     #Sustituimos el nombre del modelop y los campos
     data=data.replace('[CLASS_NAME]', Modelo)
-    data=data.replace('[campos]', str(campos_list))
+    data=data.replace('[ruta]', ruta)
+    data=data.replace('[campos]', str(campos_form))
         
     with open(os.path.join(path_py,modelo+'_forms.py'), "wt") as fout:
         fout.write(data)
@@ -83,6 +91,7 @@ def generar_CRUD(modelo, campos_list, campos_form):
     
     #Sustituimos el nombre del modelop y los campos
     data=data.replace('[class_name]', modelo)
+    data=data.replace('[ruta]', ruta)
     data=data.replace('[CLASS_NAME]', Modelo)
     data=data.replace('[campos]', str(campos_list))
         
@@ -97,6 +106,7 @@ def generar_CRUD(modelo, campos_list, campos_form):
     #Sustituimos el nombre del modelop y los campos
     data=data.replace('[class_name]', modelo)
     data=data.replace('[CLASS_NAME]', Modelo)
+    data=data.replace('[ruta]', ruta)
     campos_dt=""
     for i in campos_form:
         campos_dt=campos_dt+"{{ form."+i+"|as_crispy_field }}\n"
@@ -107,14 +117,21 @@ def generar_CRUD(modelo, campos_list, campos_form):
     
     #Pintamos lineas para el path
     print("#"+Modelo+"s")
-    print("path('"+modelo+"/list/<view>',  login_required("+modelo+"_views."+Modelo+"_BT.as_view(),'next','/accounts/login'),name='list_"+modelo+"'),")
-    print("path('"+modelo+"/new_"+modelo+"',  login_required("+modelo+"_views.new_"+modelo+",'next','/accounts/login'),name='new_"+modelo+"'),")
-    print("path('"+modelo+"/edit_"+modelo+"/<pk>',  login_required("+modelo+"_views.edit_"+modelo+",'next','/accounts/login'),name='edit_"+modelo+"'),")
-    print("path('"+modelo+"/delete_"+modelo+"/<pk>',  login_required("+modelo+"_views.delete_"+modelo+",'next','/accounts/login'),name='delete_"+modelo+"'),")
-    
-modelo='Registro'
-campos=('codigo_suc','codigo_miga','id_poste')
+    if base_path!="":
+        ruta=base_path+"/"+modelo
+    else:
+        ruta=modelo
+    print("path('"+ruta+"/list/<view>',  login_required("+modelo+"_views."+Modelo+"_BT.as_view(),'next','/accounts/login'),name='list_"+modelo+"'),")
+    print("path('"+ruta+"/new_"+modelo+"',  login_required("+modelo+"_views.new_"+modelo+",'next','/accounts/login'),name='new_"+modelo+"'),")
+    print("path('"+ruta+"/edit_"+modelo+"/<pk>',  login_required("+modelo+"_views.edit_"+modelo+",'next','/accounts/login'),name='edit_"+modelo+"'),")
+    print("path('"+ruta+"/delete_"+modelo+"/<pk>',  login_required("+modelo+"_views.delete_"+modelo+",'next','/accounts/login'),name='delete_"+modelo+"'),")
+#from main.models import *
+#[field.name for field in Orden_Trabajo._meta.get_fields()]
+modelo='Carga_masiva'
+campos_form=( 'csv',)
 
-generar_CRUD(modelo, campos, campos)
+campos_list=('inicio','estado','fin','lineas_total','registros_nuevos')
+
+generar_CRUD(modelo, campos_list, campos_form,'configuracion')
 
 print("Archivos generados, lineas a añadir en urls.py")
