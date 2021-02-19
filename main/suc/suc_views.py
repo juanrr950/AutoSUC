@@ -185,7 +185,7 @@ def new_email_sucs(request,ids):
     if request.method == 'POST':
         form=email_form(request.POST)
         if form.is_valid():
-            if enviar_email(ids,form):
+            if enviar_email(ids,form,sucs):
                 messages.success(request, "SUCs enviados con éxito.")
                 return redirect('list_suc',view="list") 
             else:
@@ -207,7 +207,7 @@ def new_email_sucs(request,ids):
     return render(request,'main/suc/suc_mail_form.html',
                   {'form':form,
                    })    
-def enviar_email(ids,form):
+def enviar_email(ids,form,sucs):
     
     zip_suc=zips_memory_suc(ids)
 
@@ -222,8 +222,7 @@ def enviar_email(ids,form):
     email.content_subtype = "html" 
     email.send()
     res=True
-    lids=list_integer_from_string(ids)
-    sucs=Suc.objects.filter(id__in=lids)
+    
     
     for suc in sucs:
         suc.enviado=datetime.now()
