@@ -107,7 +107,7 @@ def generar_powerpoint(suc):
     if n<=9:    
         delete_shape("p10")
         delete_shape("vortex10")
-        delete_shape("conector8_10")
+        delete_shape("conector9_10")
         delete_shape("m9")
         delete_shape("letter9_10") 
     
