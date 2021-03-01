@@ -24,7 +24,7 @@ def generar_powerpoint(suc):
     elif n<=7:
         sufijo="_7"
     else:
-        raise NotImplementedError("PLANTILLAS POWER POINT NO IMPLEMENTADAS PARA MAS DE 7 POSTES")
+        sufijo="_10"
     
     if suc.plantilla=='H':
         pres = Presentation(os.path.join(BASE_DIR,
@@ -32,8 +32,7 @@ def generar_powerpoint(suc):
     else:
         pres = Presentation(os.path.join(BASE_DIR,
                             'media/plantillas/PLANTILLA_VERTICAL'+sufijo+'.pptx'))
-    if n>7:
-        raise NotImplementedError("PLANTILLAS POWER POINT NO IMPLEMENTADAS PARA MAS DE 7 POSTES")
+    
     # Get the first slide
     sld = pres.slides[0]
     
