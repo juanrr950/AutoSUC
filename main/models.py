@@ -94,10 +94,16 @@ class Suc(tModel):
     
     @property
     def poste_1_id(self):
-        return self.poste_1.split('(ID ')[1].split(')')[0]
+        if self.poste_1!=None:
+            return self.poste_1.split('(ID ')[1].split(')')[0]
+        else:
+            return None
     @property
     def poste_2_id(self):
-        return self.poste_2.split('(ID ')[1].split(')')[0]
+        if self.poste_2!=None:
+            return self.poste_2.split('(ID ')[1].split(')')[0]
+        else:
+            return None
     @property
     def poste_3_id(self):
         if self.poste_3!=None:
@@ -176,46 +182,61 @@ class Suc(tModel):
         shutil.rmtree(os.path.join(BASE_DIR,'media',self.usuario.username,self.nombre),ignore_errors=True)
         
         return tModel.delete(self, using=using, keep_parents=keep_parents)
-    '''
-    def clean(self):
-       
-        #Validamos que no haya postes repetido en el form
-        dic={self.poste_1_id:'poste_1',
-             self.poste_2_id:'poste_2',
-             self.poste_3_id:'poste_3',
-             self.poste_4_id:'poste_4',
-             self.poste_5_id:'poste_5',
-             
-            }
+    
+    def clean(self, *args, **kwargs):
         
-        c= Counter(dic)
-        for i in c:
-            if dic[i]>1:
-                campo='hola'
-       
+        super(Suc, self).clean(*args, **kwargs)
+        if self.poste_1 is not None and self.poste_1!="" and self.poste_2 is not None and self.poste_2!="":
             
+            #Validamos que no haya postes repetido en el form
+            list=[self.poste_1_id,
+                 self.poste_2_id,
+                 self.poste_3_id,
+                 self.poste_4_id,
+                 self.poste_5_id,
+                 self.poste_6_id,
+                 self.poste_7_id,
+                 self.poste_8_id,
+                 self.poste_9_id,
+                 self.poste_10_id
+                 
+                ]
            
-        if campo!="":
-            raise ValidationError({campo: ('Ha introducido dos postes con la misma ID'),
-                                  })
+            print(list)
+           
+            if self.poste_1_id is not None:
+                if list.count(self.poste_1_id):
+                    raise ValidationError({'poste_1': ('Ha introducido dos postes con la misma ID'),})
+                
+            if self.poste_2_id is not None:
+                if list.count(self.poste_2_id):
+                    raise ValidationError({'poste_2': ('Ha introducido dos postes con la misma ID'),})
+                
+               
+                
+            '''       
+            
+            
+             
+            def check_poste_repetido(id_poste,campo):
+                if Registro.objects.filter(id_poste=id_poste).exists():
+                    poste=Registro.objects.get(id_poste=id_poste)
+                    return {campo: 'Poste repetido con '+poste.codigo_suc,}
+                else:
+                    return {}
+           
+            errores=dict(**check_poste_repetido(self.poste_1_id,"poste_1"),
+            **check_poste_repetido(self.poste_2_id,"poste_2"), 
+            **check_poste_repetido(self.poste_3_id,"poste_3"), 
+            **check_poste_repetido(self.poste_4_id,"poste_4"), 
+            **check_poste_repetido(self.poste_5_id,"poste_5") )
+            
+            if bool(errores):
+                raise ValidationError(errores)  
+            '''
+            
         
-         
-        def check_poste_repetido(id_poste,campo):
-            if Registro.objects.filter(id_poste=id_poste).exists():
-                poste=Registro.objects.get(id_poste=id_poste)
-                return {campo: 'Poste repetido con '+poste.codigo_suc,}
-            else:
-                return {}
-       
-        errores=dict(**check_poste_repetido(self.poste_1_id,"poste_1"),
-        **check_poste_repetido(self.poste_2_id,"poste_2"), 
-        **check_poste_repetido(self.poste_3_id,"poste_3"), 
-        **check_poste_repetido(self.poste_4_id,"poste_4"), 
-        **check_poste_repetido(self.poste_5_id,"poste_5") )
         
-        if bool(errores):
-            raise ValidationError(errores)  
-        '''
         
 class Registro(models.Model):
     codigo_suc=models.CharField(max_length=40,null=True,blank=True)
