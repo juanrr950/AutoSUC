@@ -205,13 +205,46 @@ class Suc(tModel):
             print(list)
            
             if self.poste_1_id is not None:
-                if list.count(self.poste_1_id):
+                if list.count(self.poste_1_id)>1:
                     raise ValidationError({'poste_1': ('Ha introducido dos postes con la misma ID'),})
                 
             if self.poste_2_id is not None:
-                if list.count(self.poste_2_id):
+                if list.count(self.poste_2_id)>1:
                     raise ValidationError({'poste_2': ('Ha introducido dos postes con la misma ID'),})
                 
+            if self.poste_3_id is not None:
+                if list.count(self.poste_3_id)>1:
+                    raise ValidationError({'poste_3': ('Ha introducido dos postes con la misma ID'),})
+                
+            if self.poste_4_id is not None:
+                if list.count(self.poste_4_id)>1:
+                    raise ValidationError({'poste_4': ('Ha introducido dos postes con la misma ID'),})
+                
+            if self.poste_5_id is not None:
+                if list.count(self.poste_5_id)>1:
+                    raise ValidationError({'poste_5': ('Ha introducido dos postes con la misma ID'),})
+                
+            if self.poste_6_id is not None:
+                if list.count(self.poste_6_id)>1:
+                    raise ValidationError({'poste_6': ('Ha introducido dos postes con la misma ID'),})
+                
+            if self.poste_7_id is not None:
+                if list.count(self.poste_7_id)>1:
+                    raise ValidationError({'poste_7': ('Ha introducido dos postes con la misma ID'),})
+                
+            if self.poste_8_id is not None:
+                if list.count(self.poste_8_id)>1:
+                    raise ValidationError({'poste_8': ('Ha introducido dos postes con la misma ID'),})
+                
+            if self.poste_9_id is not None:
+                if list.count(self.poste_9_id)>1:
+                    raise ValidationError({'poste_9': ('Ha introducido dos postes con la misma ID'),})
+                
+            if self.poste_10_id is not None:
+                if list.count(self.poste_10_id)>1:
+                    raise ValidationError({'poste_10': ('Ha introducido dos postes con la misma ID'),})
+                
+           
                
                 
             '''       
