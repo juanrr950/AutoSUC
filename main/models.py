@@ -124,35 +124,35 @@ class Suc(tModel):
             return None
     @property
     def poste_6_id(self):
-        if self.poste_5!=None:
+        if self.poste_6!=None:
             return self.poste_6.split('(ID ')[1].split(')')[0]
         else:
             return None
         
     @property
     def poste_7_id(self):
-        if self.poste_5!=None:
+        if self.poste_7!=None:
             return self.poste_7.split('(ID ')[1].split(')')[0]
         else:
             return None
         
     @property
     def poste_8_id(self):
-        if self.poste_5!=None:
+        if self.poste_8!=None:
             return self.poste_8.split('(ID ')[1].split(')')[0]
         else:
             return None
         
     @property
     def poste_9_id(self):
-        if self.poste_5!=None:
+        if self.poste_9!=None:
             return self.poste_9.split('(ID ')[1].split(')')[0]
         else:
             return None
         
     @property
     def poste_10_id(self):
-        if self.poste_5!=None:
+        if self.poste_10!=None:
             return self.poste_10.split('(ID ')[1].split(')')[0]
         else:
             return None
