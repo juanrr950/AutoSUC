@@ -172,10 +172,10 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 
-EMAIL_HOST='izaresoft.com'
+EMAIL_HOST='host_email.com'
 EMAIL_PORT=465
-EMAIL_HOST_USER='sucs@izaresoft.com'
-EMAIL_HOST_PASSWORD='cobragato'
+EMAIL_HOST_USER='email@pruebas.com'
+EMAIL_HOST_PASSWORD='clavemail'
 EMAIL_USE_SSL=True
 
 DEFAULT_FILE_STORAGE = 'main.storage.CustomFileSystemStorage'
